@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"whisker17.github.io","root":"/","scheme":"Muse","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false};
+  </script>
+
+  <meta name="description" content="随着云计算的发展，我们越来越趋向于将数据保存在第三方云端上，同时这些数据的安全性也越来越收到用户的重视。在传统的加密技术中，用户的数据被加密之后存储到云端，当用户需要这些数据时，从云端获取加密的数据，然后使用自己的私钥对这些加密的数据进行解密从而获得明文信息。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代理重加密综述">
+<meta property="og:url" content="https://whisker17.github.io/2020/08/12/pre/index.html">
+<meta property="og:site_name" content="Ideal Area">
+<meta property="og:description" content="随着云计算的发展，我们越来越趋向于将数据保存在第三方云端上，同时这些数据的安全性也越来越收到用户的重视。在传统的加密技术中，用户的数据被加密之后存储到云端，当用户需要这些数据时，从云端获取加密的数据，然后使用自己的私钥对这些加密的数据进行解密从而获得明文信息。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://whisker17.github.io/.io//2020-08-23_23-07.png">
+<meta property="og:image" content="https://whisker17.github.io/.io//2020-08-26_23-59.png">
+<meta property="og:image" content="https://whisker17.github.io/.io//2020-08-27_10-42.png">
+<meta property="og:image" content="https://whisker17.github.io/.io//2020-08-27_11-27.png">
+<meta property="og:image" content="https://whisker17.github.io/.io//2020-08-27_11-45.png">
+<meta property="og:image" content="https://whisker17.github.io/.io//2020-08-27_11-46.png">
+<meta property="og:image" content="https://whisker17.github.io/.io//2020-08-27_12-05.png">
+<meta property="og:image" content="https://whisker17.github.io/.io//2020-08-27_12-11.png">
+<meta property="article:published_time" content="2020-08-12T03:30:55.000Z">
+<meta property="article:modified_time" content="2020-09-09T15:30:48.990Z">
+<meta property="article:author" content="Whisker17">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://whisker17.github.io/.io//2020-08-23_23-07.png">
+
+<link rel="canonical" href="https://whisker17.github.io/2020/08/12/pre/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>代理重加密综述 | Ideal Area</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Ideal Area" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Ideal Area</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E9%87%8D%E5%8A%A0%E5%AF%86"><span class="nav-number">1.</span> <span class="nav-text">代理重加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Umbral"><span class="nav-number">2.</span> <span class="nav-text">Umbral</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#KeyGen-amp-amp-ReKeyGen"><span class="nav-number">2.1.</span> <span class="nav-text">KeyGen &amp;&amp; ReKeyGen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Encapsulation-amp-amp-Decapsulation"><span class="nav-number">2.2.</span> <span class="nav-text">Encapsulation &amp;&amp; Decapsulation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Re-Encapsulation-amp-amp-Fragments-Decapsulation"><span class="nav-number">2.3.</span> <span class="nav-text">Re-Encapsulation &amp;&amp; Fragments Decapsulation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PyUmbral"><span class="nav-number">3.</span> <span class="nav-text">PyUmbral</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Key-Generation"><span class="nav-number">3.1.</span> <span class="nav-text">Key Generation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Encryption"><span class="nav-number">3.2.</span> <span class="nav-text">Encryption</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Re-Encryption-Key-Fragments"><span class="nav-number">3.3.</span> <span class="nav-text">Re-Encryption Key Fragments</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Re-Encryption"><span class="nav-number">3.4.</span> <span class="nav-text">Re-Encryption</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Decryption-by-Bob"><span class="nav-number">3.5.</span> <span class="nav-text">Decryption by Bob</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Whisker17</p>
+  <div class="site-description" itemprop="description">Blockchain | Cryptography</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://whisker17.github.io/2020/08/12/pre/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Whisker17">
+      <meta itemprop="description" content="Blockchain | Cryptography">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ideal Area">
+    </span>
+
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          代理重加密综述
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-12 11:30:55" itemprop="dateCreated datePublished" datetime="2020-08-12T11:30:55+08:00">2020-08-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-09 23:30:48" itemprop="dateModified" datetime="2020-09-09T23:30:48+08:00">2020-09-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cryptography-blockchain-%E4%BB%A3%E7%90%86%E9%87%8D%E5%8A%A0%E5%AF%86/" itemprop="url" rel="index"><span itemprop="name">cryptography | blockchain | 代理重加密</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>随着云计算的发展，我们越来越趋向于将数据保存在第三方云端上，同时这些数据的安全性也越来越收到用户的重视。在传统的加密技术中，用户的数据被加密之后存储到云端，当用户需要这些数据时，从云端获取加密的数据，然后使用自己的私钥对这些加密的数据进行解密从而获得明文信息。</p>
+  <a id="more"></a>
+<h2 id="代理重加密"><a href="#代理重加密" class="headerlink" title="代理重加密"></a>代理重加密</h2><p>首先我们需要了解，如果我们要做一次点对点的分享，用户 Alice 想把自己的一份原文发送给 Bob ，当然不可能直接把原文发送过去，这样容易造成数据的泄露，那么我们可以通过加密的手段使得他人拦截到的数据无法被破译，最简单的方式就是 Alice 自己生成一对公私钥对，然后用自己的公钥对原文进行加密，然后将私钥交给 Bob ，使得 Bob 可以通过该私钥对密文进行解密从而获得原文。But, hold on ~~ 如果 Alice 和 Bob 之间可以相互安全的传送私钥，那还有什么必要去进行加密这一步呢？私钥如果被拦截，任何人都可以反解出原文是什么了，如果双方可以安全的传输私钥而不被其他人拦截，那何不直接传输原文呢？</p>
+<p>于是就衍生出了另一种方案，需要双方<strong>各自生成一对公私钥对</strong>，然后就是这样一个过程：</p>
+<ol>
+<li>Alice 使用 Bob 的公钥对需要分享的信息进行加密</li>
+<li>将密文发送给 Bob</li>
+<li>Bob 接收到密文，用自己的私钥进行解密从而获得原文</li>
+</ol>
+<p>由此我们可以了解到这种方案的缺陷，如果我们需要将这段信息分发给多个用户，那 Alice 本人就需要用所有用户提供的公钥对自己的原文进行加密后再分发，这无疑大大增加了发送方的负担，让发送方体验非常糟糕。那么，我们是否可以借助一个代理方，将这个过程释放到一个性能更高的代理方，但是有可以保证自己的原文不被泄露呢，于是就引出了<strong>代理重加密</strong>这个概念。</p>
+<blockquote>
+<p>代理重加密是一种公钥加密方案，允许用户 Alice 将她的解密权限“委托”给另一个用户 Bob 。Alice 可以委托一个半可信代理将一个被自己所加密的密文转化为一个相当于被 Bob 所加密的密文。</p>
+<p>同时，半可信代理是独立于 Alice 运行的，这也解决了增加 Alice 负担的问题。当然，我们也需要保证代理是无法看到 Alice 的原文的，也不能将 Alice 的消息重新加密给 Alice 没有授予解密权限的用户。</p>
+</blockquote>
+<p>假设有这样一个场景，Alice 有事儿要出门，希望让 Bob 来处理自己不在家这段时间收到的邮件，但是又不希望把自己邮箱的密码告诉 Bob ，所以希望将自己这段时间邮箱里收到的邮件都转发给 Bob ，但是害怕邮箱的管理人员会看到自己的邮件，所以将邮件加密后指定 Bob 作为接收人，让 Bob 可以通过自己的私钥去解密这些邮件。但是这样的需求要如何做到呢，由于邮件的密文形式是由 Alice 的公钥进行加密的，即使直接转发给了 Bob ，他也无法进行解密，最简单的方法就是将 Alice 的私钥发送给邮件服务器，邮件服务器对密文进行解密然后再通过 Bob 的公钥对明文加密，这样转发给 Bob 的密文就可以通过 Bob 的私钥进行解密了。但是与此同时邮件服务器这端就获取了 Alice 的明文信息，这也是 Alice 无法接受的。</p>
+<p>那么，到底该如何做到呢？</p>
+<h2 id="Umbral"><a href="#Umbral" class="headerlink" title="Umbral"></a>Umbral</h2><p>这里具体介绍一种方案的原理。下图的三个框表明了这些操作各自分属于 Alice ，Proxy ，Bob 。</p>
+<p><img src="/.io//2020-08-23_23-07.png" alt="2020-08-23_23-07"></p>
+<p>首先我们明确一下在 Umbral 中的各个操作的意义。</p>
+<h3 id="KeyGen-amp-amp-ReKeyGen"><a href="#KeyGen-amp-amp-ReKeyGen" class="headerlink" title="KeyGen &amp;&amp; ReKeyGen"></a>KeyGen &amp;&amp; ReKeyGen</h3><ul>
+<li><strong>KeyGen()：</strong> 生成一组公私钥对</li>
+<li><strong>ReKeyGen(<script type="math/tex">sk_A,pk_B</script>,N,t)：</strong> 通过 Alice（授权人） 的私钥以及 Bob（被授权人） 的公钥，以及分片的数量 N 和门限值 t，生成一组 kfrag </li>
+</ul>
+<h3 id="Encapsulation-amp-amp-Decapsulation"><a href="#Encapsulation-amp-amp-Decapsulation" class="headerlink" title="Encapsulation &amp;&amp; Decapsulation"></a>Encapsulation &amp;&amp; Decapsulation</h3><ul>
+<li><strong>Encapsulation(<script type="math/tex">pk_A</script>)：</strong> 可以根据公钥 pka 生成一个对称密钥 K 以及一个特殊的结构 capsule</li>
+<li><strong>Decapsulation(<script type="math/tex">sk_A</script>,capsule)：</strong> 可以根据一个私钥和一个 capsule 反推出相应的对称密钥 K</li>
+</ul>
+<h3 id="Re-Encapsulation-amp-amp-Fragments-Decapsulation"><a href="#Re-Encapsulation-amp-amp-Fragments-Decapsulation" class="headerlink" title="Re-Encapsulation &amp;&amp; Fragments Decapsulation"></a>Re-Encapsulation &amp;&amp; Fragments Decapsulation</h3><ul>
+<li><strong>ReEncapsulation(kFrag, capsule)：</strong> 通过输入一个生成的 kfrag 结构以及 capsule ，生成一个 capsule 的 frag 结构，即 cfrag </li>
+<li><strong>DecapsulateFrags(<script type="math/tex">sk_B,(cFrags)^t_{i=1},</script> capsule)：</strong> 通过 Bob 的私钥和收到的 capsule ，对一组 cfrag 反推出对密文加密的对称公钥 K </li>
+</ul>
+<p>接下来，我们来剖析一下在这些操作中具体做了些什么：</p>
+<p>首先，我们先定义了 <script type="math/tex">g,U\ \in \ \mathbb{G}</script> ，<script type="math/tex">\mathbb{G}</script> 指的是一个循环群，g 和 U 都是作为公私钥转化时的底数。</p>
+<ul>
+<li><p><strong>ReKeyGen(<script type="math/tex">sk_A</script> , <script type="math/tex">pk_B</script> , N,t)：</strong></p>
+<ol>
+<li>取一个随机数 <script type="math/tex">x^A \ \in \ \mathbb{Z}_q</script> ，计算出以此为私钥所得的公钥 <script type="math/tex">X^A=g^{x^A}</script> </li>
+<li>将 <script type="math/tex">x_A</script> ，<script type="math/tex">pk_$B$ ，</script>(pk_B)^{x^A}<script type="math/tex">级联并求得其 Hash 值，即求得</script>d=H( X_A ，pk_B ，(pk_B)^{x^A})<script type="math/tex">，d 即为这对临时密钥对  (</script>x^A<script type="math/tex">,</script>X^A$$) 和 Bob 这端公私钥对之间一个非交互式的 DH 密钥交互的结果，我们借助 d 来使得两端的重加密密钥生成过程变成非交互式。</li>
+<li>取 t-1 个随机数 <script type="math/tex">f_i \ \in \ \mathbb{Z}_q</script>，同时计算 <script type="math/tex">f_0=sk_A*d^{-1} \  mod \ q</script> </li>
+<li>构造这样一个 t-1 阶的多项式 <script type="math/tex">f(x)=f_0+f_1x+f_2x^2+\ ...\ +f_{t-1}x^{t-1}</script></li>
+<li>计算 <script type="math/tex">D=H(pk_A ，pk_b ，(pk_B)^{sk_A})</script></li>
+<li>取两个随机数 <script type="math/tex">y,id\ \in \mathbb{Z}_q</script> ，计算 <script type="math/tex">s_x=H(id,D)，Y=g^y</script> ，将 <script type="math/tex">s_x</script> 代入多项式，求得 <script type="math/tex">rk=f(s_x)</script> ，将 rk 代入，求得 <script type="math/tex">U_1=U^{rk}</script> 。</li>
+<li>将上述值代入，求得 <script type="math/tex">z_1=H(Y,id,pk_A,pk_B,U_1,X_A)，z_2=y-a*z_1</script> </li>
+<li>定义 kFrag 的结构为一个这样的元组 <script type="math/tex">(id,rk,X_A,U_1,z_1,z_2)</script></li>
+<li>将 6-8 重复 N 次，由此获得一个大小为 N 的元组数组 kFrags</li>
+</ol>
+</li>
+<li><p><strong>Encapsulation(<script type="math/tex">pk_A</script>)：</strong></p>
+<ol>
+<li>取两个随机数 <script type="math/tex">r,u\ \in \mathbb{Z}_q</script> ，计算 <script type="math/tex">E=g^r，V=g^u</script> </li>
+<li>根据 E 和 V ，我们求得 <script type="math/tex">s=u+r*H(E,V)，K=KDF((pk_A)^{r+u})</script> ，KDF 是一个生成密钥的函数，可以类似的认为是一个随机预言机</li>
+<li>由此，我们定义 capsule 这个结构为一个这样的元组 <script type="math/tex">(E,V,s)</script> ，同时我们也得到了一个用于加密的对称密钥 K  </li>
+</ol>
+</li>
+<li><p><strong>CheckCapsule(capsule)：</strong></p>
+<p>如果我们需要验证 capsule 是否正确，可以通过计算 <script type="math/tex">g^s=V*E^{H(E,V)}</script> 两端是否相等来判断，该公式的推导过程如下：</p>
+<script type="math/tex; mode=display">
+g^s=g^{u+r*H(E,V)}=V*E^{H(E,V)}</script></li>
+<li><p><strong>Decapsulate(<script type="math/tex">sk_A</script>, capsule)：</strong></p>
+<p>既然我们可以通过公钥去打包一份 capsule 并由此生成一个对称密钥来对明文加密，那么我们一定也就可以通过对应的私钥和 capsule 来重新生成这个我们所需要的对称密钥 K 。即 <script type="math/tex">K=KDF((E*V)^{sk_A})</script> ，下面是推导过程：</p>
+<script type="math/tex; mode=display">
+K=KDF((E*V)^{sk_A})\\=KDF(g^{r*sk_A+u*sk_A})\\=KDF(g^{sk_A*(r+u)})\\=KDF((pk_A)^{r+u})</script><p>在计算前我们会先进行对 CheckCapsule 这个函数的调用，以确保 capsule 的有效性。</p>
+</li>
+<li><p><strong>ReEncapsulation(kFrag, capsule)：</strong></p>
+<p>已知会输入 kFrag 和 capsule 这两个元组，其结构为 <script type="math/tex">kFrag=(id,rk,X_A,U_1,z_1,z_2)，capsule=(E,V,s)</script> ，首先我们会先调用 CheckCapsule 这个函数，以确保 capsule 的有效性。然后我们计算 <script type="math/tex">E_1=E^{rk}，V_1=V^{rk}</script> ，随即得出一个新的元组 <script type="math/tex">cFrag=(E_1,V_1,id,X_A)</script></p>
+</li>
+<li><p><strong>DecapsulateFrags(<script type="math/tex">sk_B, (cFrags)^t_{i=1},</script> capsule)：</strong></p>
+<p>我们会在 Bob 端收到多个 cFrag ，只要达到门限值，我们就可以进行反推。现在我们需要通过上述的输入来推出用于加密明文的对称密钥 K ：</p>
+<ol>
+<li>计算 <script type="math/tex">D=H(pk_A,pk_B,pk_A^{sk_B})</script></li>
+<li>计算 <script type="math/tex">s_{x,i}=H(id_i,D)</script> 并由此组成大小为 t 的数组 S </li>
+<li>计算 <img src="/.io//2020-08-26_23-59.png" style="zoom: 67%;"></li>
+<li>计算<script type="math/tex">E^{'}=\prod_{i=1}^t{({E_{1,i}})^{\lambda_{i,S}}}，V^{'}=\prod_{i=1}^t{({V_{1,i}})^{\lambda_{i,S}}}</script> </li>
+<li>计算 <script type="math/tex">d=H(X_A,pk_B,X_A^{sk_B})</script> </li>
+<li>最后计算对称密钥 <script type="math/tex">K=KDF((E^{'}*V^{'})^d)</script></li>
+</ol>
+<p>？？？发生了什么，为什么突然就算出了对称密钥 K ，下面我们就来仔细分析一下 Alice 和 Bob 两端所计算的值</p>
+<ul>
+<li><p>在 Alice 端，我们计算了<script type="math/tex">D=H(pk_A ，pk_b ，(pk_b)^{sk_A})</script> ，而在 Bob 端，我们同样计算了 <script type="math/tex">D=H(pk_A,pk_B,pk_A^{sk_B})</script> ，由于</p>
+<script type="math/tex; mode=display">
+pb_B^{sk_A}=g^{b*a}=g^{a*b}=pk_A^{sk_B}</script><p>于是，我们可以推出两端的 D 是相等的</p>
+</li>
+<li><p>在 Alice 端，我们计算了<script type="math/tex">d=H( X_A ，pk_B ，(pk_B)^{x^A})</script> ，而在 Bob 端，我们同样计算了 <script type="math/tex">d=H(X_A,pk_B,X_A^{sk_B})</script> ，由于</p>
+<script type="math/tex; mode=display">
+(pk_B)^{x^A})=g^{sk_B*x^A}=X_A^{sk_B}</script><p>于是，我们可以推出两端的 d 是相等的</p>
+</li>
+<li><p>在 Alice 端，我们构建了一个多项式组 <script type="math/tex">rk_i=f(s_{x_i})</script>：</p>
+<p><img src="/.io//2020-08-27_10-42.png" alt></p>
+<p>根据拉格朗日插值法，我们可以得出该多项式的解，有兴趣的同学可以看我写的另一篇文章 <a href="https://whisker17.github.io/2020/08/18/Interpolation/#more">《插值法综述》</a> 。该多项式的解为：</p>
+<p><img src="/.io//2020-08-27_11-27.png" alt="多项式组的解"></p>
+<p>而在 Bob 端，我们通过计算 <script type="math/tex">E^{'}\ 和\ V^{'}</script> 来反推密钥，那么 <script type="math/tex">E^{'}\ 和\ V^{'}</script> 到底是什么呢，我们来计算一下：</p>
+<p>已知 <script type="math/tex">E_1=E^{rk}，那么\ E_{1,i}=E^{rk_i}</script> ，于是我们可推：</p>
+<p><img src="/.io//2020-08-27_11-45.png" alt></p>
+<p>那么</p>
+<p><img src="/.io//2020-08-27_11-46.png" alt></p>
+<p>根据多项式组的解以及 <script type="math/tex">\lambda_{i,S}</script> ，我们可以得出：</p>
+<p><img src="/.io//2020-08-27_12-05.png" alt> </p>
+<p>又因为在 Alice 端我们知道 <script type="math/tex">f_0=sk_A*d^{-1} \  mod \ q</script> ，而在 Bob 端的 <script type="math/tex">f_0</script> 如上，那么：</p>
+<script type="math/tex; mode=display">
+K_{Alice}=KDF((E*V)^{sk_A})=KDF((E^{'}*V^{'})^d)=K_{Bob}</script><p>得证。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>这里又出现了一个新的问题：Bob 是否可以算出 Alice 的私钥？</p>
+<p>因为我们可以看到<img src="/.io//2020-08-27_12-11.png" style="zoom:67%;"> ，那么我们好像就可以算出 Alice 的私钥了，这里我们可以知道，在 Bob 端我们是已知 <script type="math/tex">d \ 和\ \lambda_{i,S}</script> 的，但是我们是不知道 <script type="math/tex">rk_i</script> 的，但是 Proxy 是知道这个参数的，这就引出了这个方案的一个前提要求，即：<strong>要求 Proxy 是一个半可信的机构</strong></p>
+<h2 id="PyUmbral"><a href="#PyUmbral" class="headerlink" title="PyUmbral"></a>PyUmbral</h2><p>下面介绍一下具体的操作，即PyUmbral，之前提到的 Umbral 的 Python 实现版本。</p>
+<h3 id="Key-Generation"><a href="#Key-Generation" class="headerlink" title="Key Generation"></a>Key Generation</h3><ul>
+<li>在 Alice 端生成两组非对称加密的公私钥对</li>
+<li>在 Bob 端生成一组非对称加密的公私钥对</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> umbral <span class="keyword">import</span> pre, keys, signing</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate Umbral keys for Alice.</span></span><br><span class="line">alices_private_key = keys.UmbralPrivateKey.gen_key()</span><br><span class="line">alices_public_key = alices_private_key.get_pubkey()</span><br><span class="line"></span><br><span class="line">alices_signing_key = keys.UmbralPrivateKey.gen_key()</span><br><span class="line">alices_verifying_key = alices_signing_key.get_pubkey()</span><br><span class="line">alices_signer = signing.Signer(private_key=alices_signing_key)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate Umbral keys for Bob.</span></span><br><span class="line">bobs_private_key = keys.UmbralPrivateKey.gen_key()</span><br><span class="line">bobs_public_key = bobs_private_key.get_pubkey()</span><br></pre></td></tr></table></figure>
+<h3 id="Encryption"><a href="#Encryption" class="headerlink" title="Encryption"></a>Encryption</h3><ul>
+<li>通过 Alice 的公钥对明文进行加密，从而获得密文和 capsule</li>
+<li>相应的，我们也可以通过 Alice 的私钥对密文以及 capsule 进行解密，从而获得明文</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Encrypt data with Alice&#x27;s public key.</span></span><br><span class="line">plaintext = <span class="string">b&#x27;Proxy Re-Encryption is cool!&#x27;</span></span><br><span class="line">ciphertext, capsule = pre.encrypt(alices_public_key, plaintext)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Decrypt data with Alice&#x27;s private key.</span></span><br><span class="line">cleartext = pre.decrypt(ciphertext=ciphertext,</span><br><span class="line">                        capsule=capsule,</span><br><span class="line">                        decrypting_key=alices_private_key)</span><br></pre></td></tr></table></figure>
+<h3 id="Re-Encryption-Key-Fragments"><a href="#Re-Encryption-Key-Fragments" class="headerlink" title="Re-Encryption Key Fragments"></a>Re-Encryption Key Fragments</h3><ul>
+<li>Alice 可以使用自己的私钥生成 kfrags</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Alice generates &quot;M of N&quot; re-encryption key fragments (or &quot;KFrags&quot;) for Bob.</span></span><br><span class="line"><span class="comment"># In this example, 10 out of 20.</span></span><br><span class="line">kfrags = pre.generate_kfrags(delegating_privkey=alices_private_key,</span><br><span class="line">                             signer=alices_signer,</span><br><span class="line">                             receiving_pubkey=bobs_public_key,</span><br><span class="line">                             threshold=<span class="number">10</span>,</span><br><span class="line">                             N=<span class="number">20</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Re-Encryption"><a href="#Re-Encryption" class="headerlink" title="Re-Encryption"></a>Re-Encryption</h3><ul>
+<li>Bob 端通过 Alice 的公钥以及验证公钥和自己的公钥完整 capsule，并且通过接收到一定数量的 kfrag 得到相应的 cfrag</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Several Ursulas perform re-encryption, and Bob collects the resulting `cfrags`.</span></span><br><span class="line"><span class="comment"># He must gather at least `threshold` `cfrags` in order to activate the capsule.</span></span><br><span class="line"></span><br><span class="line">capsule.set_correctness_keys(delegating=alices_public_key,</span><br><span class="line">                             receiving=bobs_public_key,</span><br><span class="line">                             verifying=alices_verifying_key)</span><br><span class="line"></span><br><span class="line">cfrags = list()           <span class="comment"># Bob&#x27;s cfrag collection</span></span><br><span class="line"><span class="keyword">for</span> kfrag <span class="keyword">in</span> kfrags[:<span class="number">10</span>]:</span><br><span class="line">  cfrag = pre.reencrypt(kfrag=kfrag, capsule=capsule)</span><br><span class="line">  cfrags.append(cfrag)    <span class="comment"># Bob collects a cfrag</span></span><br></pre></td></tr></table></figure>
+<h3 id="Decryption-by-Bob"><a href="#Decryption-by-Bob" class="headerlink" title="Decryption by Bob"></a>Decryption by Bob</h3><ul>
+<li>最终 Bob 可以通过 cfrags 以及自己的私钥对接收到的密文进行解密</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Bob activates and opens the capsule</span></span><br><span class="line"><span class="keyword">for</span> cfrag <span class="keyword">in</span> cfrags:</span><br><span class="line">  capsule.attach_cfrag(cfrag)</span><br><span class="line"></span><br><span class="line">bob_cleartext = pre.decrypt(ciphertext=ciphertext,</span><br><span class="line">                            capsule=capsule,</span><br><span class="line">                            decrypting_key=bobs_private_key)</span><br><span class="line"><span class="keyword">assert</span> bob_cleartext == plaintext</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>综上所述，我们来总结一下 PRE 与传统 PKE 的对比。</p>
+<p>在静态场景下，传统做法有一个较长的初始化过程。在实际运用中，重加密方法需要较大的计算需求，但节约了一部分存储，两种方式差距不是特别明显。</p>
+<p>但一般情况下，文件系统的用户和内容都是动态的，此时重加密做法的优势明显。具体来说，在增加用户时，传统做法需要本地对已有的所有加密密钥进行加密，可能花费很长时间。在增加文件时，重加密做法下，数据分享者只需要使用自己的公钥去加密对称密钥即可，而传统做法需要做M次非对称加密。更新文件加密密钥时，重加密做法的数据分析者只需要使用自己的公钥去加密对称密钥即可（无需再次生成重加密密钥），而传统做法需则需要重新执行初始化过程。另外，服务端拥有更强的计算能力，重加密算法把这些计算过程让服务端更多承担，尽量减少客户端的计算，符合架构设计原理。最后，重加密算法的弹性更好，一般来说，x不会是一个太大的数，当文件访问稀疏时，在一开始就执行多次可能无用的加密是巨大的浪费。</p>
+<p>总的来说：</p>
+<ol>
+<li>对于同一类明文，我们使用的相同的对称密钥进行加密，与对端的用户无关</li>
+<li>对于对端不同的用户，我们需要在本端针对不同的用户生成不同的重加密密钥，与本段文件无关</li>
+<li>在做完授权的部分后，本端将不再参与其他过程，解放客户端的压力，使之成为一个非交互性的系统</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://spqrlab1.github.io/papers/ateniese-proxy-reenc-ndss05.pdf">Improved Proxy Re-Encryption Schemes with Applications to Secure Distributed Storage</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.doc88.com/p-2703873549583.html">代理重加密若干问题研究</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/nucypher/umbral-doc/blob/master/umbral-doc.pdf">UMBRAL: A THRESHOLD PROXY RE-ENCRYPTION SCHEME</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1707.06140.pdf">NuCypher KMS: Decentralized key management system</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/nucypher/pyUmbral/">PyUmbral</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/10/next-bug-fix/" rel="prev" title="Blog 搭建错误总结">
+      <i class="fa fa-chevron-left"></i> Blog 搭建错误总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/13/shamir-secret-share/" rel="next" title="shamir secret share">
+      shamir secret share <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Whisker17</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

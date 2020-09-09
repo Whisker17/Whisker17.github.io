@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"whisker17.github.io","root":"/","scheme":"Muse","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false};
+  </script>
+
+  <meta name="description" content="门限机制在现实中有效的门限机制在密钥管理的应用中有着举足轻重的地位。我们假设一个场景，有一个秘密被锁在一个箱子里面，一共有 5 个人参与这件事，最少需要 3 个人在场的时候才可以打开这个箱子，那么最少需要多少把锁，而每个人最少需要保管几把钥匙？答案是 10 把锁，6 把钥匙。但是如果将人数扩大到 11 人，最少需要 6 人才能打开箱子，那么锁和钥匙数就会扩大到 462 和 252。抽象成 N 个人">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shamir secret share">
+<meta property="og:url" content="https://whisker17.github.io/2020/08/13/shamir-secret-share/index.html">
+<meta property="og:site_name" content="Ideal Area">
+<meta property="og:description" content="门限机制在现实中有效的门限机制在密钥管理的应用中有着举足轻重的地位。我们假设一个场景，有一个秘密被锁在一个箱子里面，一共有 5 个人参与这件事，最少需要 3 个人在场的时候才可以打开这个箱子，那么最少需要多少把锁，而每个人最少需要保管几把钥匙？答案是 10 把锁，6 把钥匙。但是如果将人数扩大到 11 人，最少需要 6 人才能打开箱子，那么锁和钥匙数就会扩大到 462 和 252。抽象成 N 个人">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://whisker17.github.io/.io//2020-08-17_23-56.png">
+<meta property="og:image" content="https://whisker17.github.io/.io//2020-08-17_23-48.png">
+<meta property="og:image" content="https://whisker17.github.io/.io//2020-08-17_23-59.png">
+<meta property="article:published_time" content="2020-08-13T08:07:27.000Z">
+<meta property="article:modified_time" content="2020-09-09T15:30:48.996Z">
+<meta property="article:author" content="Whisker17">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://whisker17.github.io/.io//2020-08-17_23-56.png">
+
+<link rel="canonical" href="https://whisker17.github.io/2020/08/13/shamir-secret-share/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>shamir secret share | Ideal Area</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Ideal Area" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Ideal Area</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%A8%E9%99%90%E6%9C%BA%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">门限机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">拉格朗日插值法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shamir-%E9%97%A8%E9%99%90%E6%96%B9%E6%A1%88"><span class="nav-number">3.</span> <span class="nav-text">Shamir 门限方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Whisker17</p>
+  <div class="site-description" itemprop="description">Blockchain | Cryptography</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://whisker17.github.io/2020/08/13/shamir-secret-share/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Whisker17">
+      <meta itemprop="description" content="Blockchain | Cryptography">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ideal Area">
+    </span>
+
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          shamir secret share
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-13 16:07:27" itemprop="dateCreated datePublished" datetime="2020-08-13T16:07:27+08:00">2020-08-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-09 23:30:48" itemprop="dateModified" datetime="2020-09-09T23:30:48+08:00">2020-09-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Cryptography-Math/" itemprop="url" rel="index"><span itemprop="name">Cryptography | Math</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="门限机制"><a href="#门限机制" class="headerlink" title="门限机制"></a>门限机制</h2><p>在现实中有效的门限机制在密钥管理的应用中有着举足轻重的地位。我们假设一个场景，有一个秘密被锁在一个箱子里面，一共有 5 个人参与这件事，最少需要 3 个人在场的时候才可以打开这个箱子，那么最少需要多少把锁，而每个人最少需要保管几把钥匙？答案是 10 把锁，6 把钥匙。但是如果将人数扩大到 11 人，最少需要 6 人才能打开箱子，那么锁和钥匙数就会扩大到 462 和 252。抽象成 N 个人，锁的数量为 C(N,N/2)，钥匙数量为 C(N-1,N/2)。随着人数增加，锁和钥匙的数量将会呈现指数级增加，这也会大大增加资源的负担。</p>
+<p>我们将某个现实中的问题抽象成为某个数据 D 。我们的目标是将 D 分成 n 份 D1 , D2 , … Dn ，满足：</p>
+<p>（1）任意k或多于 k 份 Di 可以很容易地计算出 D</p>
+<p>（2）任意 k-1 或少于 k-1 份 Di 信息不能准确计算出 D （所有可能的值相同）</p>
+<p>这样的机制称为一个 (k, n) 门限机制。</p>
+<a id="more"></a>
+<h2 id="拉格朗日插值法"><a href="#拉格朗日插值法" class="headerlink" title="拉格朗日插值法"></a>拉格朗日插值法</h2><p><strong>插值的意义在于拟合，以便求出缺失的点</strong></p>
+<p>这里直接给出结论，具体的介绍会另开一篇文章来讲，同时也会介绍各种插值法。</p>
+<p>对于某个多项式函数，已知给定的 j+1 个取值点，即 (x0 , f(x0)), … , (xj , f(xj))</p>
+<p>假设任意两个不同的 xk 都互不相同，那么这个多项式就为：</p>
+<p><img src="/.io//2020-08-17_23-56.png" alt="2020-08-17_23-56"></p>
+<p>其中每个 lj(x) 为<strong>拉格朗日基本多项式</strong>（或者称之为<strong>插值基函数</strong>），其表达式为：</p>
+<p><img src="/.io//2020-08-17_23-48.png" alt="2020-08-17_23-48"></p>
+<h2 id="Shamir-门限方案"><a href="#Shamir-门限方案" class="headerlink" title="Shamir 门限方案"></a>Shamir 门限方案</h2><p>首先，我们知道在在一个平面中，两点可以确定一条直线，三个点可以确定一个 2 次方程，于是我们可以推出给定 K 个不同的点，有且仅有 K-1 次多项式 q(x) 使得 q(xi) = yi 对所有 i 成立。于是我们可以如前文所说的那样：将 D 分成 Di ，随机选择一个 k-1 次多项式：</p>
+<p><img src="/.io//2020-08-17_23-59.png" alt="2020-08-17_23-59"></p>
+<p>其中 a0 = D 且 D1 = q(1)，D2 = q(2)，… ，Dn = q(n) 。于是，当我们给定任意 Di 值的 k 个子集时，就可以通过插值法找到 q(x) 的系数，然后计算出 D = q(0)。</p>
+<hr>
+<p>这种 (k,n) 门限机制的<strong>优点</strong>在于：</p>
+<ol>
+<li>每部分信息的大小不会超过原始数据</li>
+<li>当 k 这个数值固定时，Di 可以动态的增删而不会影响别的信息片段</li>
+<li>可以在不改变原始数据 D 的情况下轻松的改变 Di 这些信息片段，我们只需要保证这些片段最终可以组成一个恒定的自由项的多项式就可以了。同时这样可变的性质能够提高安全性。</li>
+<li>我们也可以利用多项式的系数做一个分层的机制，Di 的片数取决于其重要性。例如，如果我们给公司的主席 3 个 q(x) 的值，每个副主席两个值，每个执行官 1 个值，则（3，n）门限机制给检查签名需要：任意三个执行官或者任意两个执行官其中一个执行官是副主席，或者主席自己。</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://www5.in.tum.de/lehre/vorlesungen/konkr_math/SS_09/prog/PA3/shamir.pdf">How to share a secret</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/58333118">如何直观的理解拉格朗日插值法</a></li>
+<li><a target="_blank" rel="noopener" href="https://ccrma.stanford.edu/~jos/Interpolation/Lagrange_Interpolation.html">Lagrange Interpolation</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/12/pre/" rel="prev" title="代理重加密综述">
+      <i class="fa fa-chevron-left"></i> 代理重加密综述
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/18/Interpolation/" rel="next" title="插值法综述">
+      插值法综述 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Whisker17</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

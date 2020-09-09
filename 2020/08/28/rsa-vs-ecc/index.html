@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"whisker17.github.io","root":"/","scheme":"Muse","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false};
+  </script>
+
+  <meta name="description" content="为什么在现阶段众多的区块链项目的选择依旧是 ECC 而不是 RSA 呢？这两种加密算法又有什么区别和各自的优缺点呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="由 RSA VS ECC 引发的密码学基础普及">
+<meta property="og:url" content="https://whisker17.github.io/2020/08/28/rsa-vs-ecc/index.html">
+<meta property="og:site_name" content="Ideal Area">
+<meta property="og:description" content="为什么在现阶段众多的区块链项目的选择依旧是 ECC 而不是 RSA 呢？这两种加密算法又有什么区别和各自的优缺点呢？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://whisker17.github.io/.io//v2-1d205ac7a84a53685519cdf801a32abd_720w.png">
+<meta property="og:image" content="https://whisker17.github.io/.io//v2-06eb5f52f137a038bf2c446a411c4324_720w.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=+%5Cleft%5C%7B+%28x%2C+y%29+%5Cin+%5Cmathbb%7BR%7D%5E2%5C+%7C%5C+y%5E2+%3D+x%5E3+%2B+ax+%2B+b%2C%5C+4+a%5E3+%2B+27+b%5E2+%5Cne+0+%5Cright%5C%7D%5C+%5Ccup%5C+%5Cleft%5C%7B+0+%5Cright%5C%7D">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-94a567939b88645be83086a53469cfc5_720w.jpg">
+<meta property="og:image" content="https://whisker17.github.io/.io//v2-2f6f71e39cf1da5723c1a48c5d4eebc2_720w.png">
+<meta property="og:image" content="https://whisker17.github.io/.io//v2-91b444e4c0e4c386495cb359b064c655_b.gif">
+<meta property="og:image" content="https://whisker17.github.io/.io//v2-ba1669a982efc7cd7786c74c372dfecd_b.gif">
+<meta property="article:published_time" content="2020-08-28T14:36:37.000Z">
+<meta property="article:modified_time" content="2020-09-09T15:30:48.993Z">
+<meta property="article:author" content="Whisker17">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://whisker17.github.io/.io//v2-1d205ac7a84a53685519cdf801a32abd_720w.png">
+
+<link rel="canonical" href="https://whisker17.github.io/2020/08/28/rsa-vs-ecc/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>由 RSA VS ECC 引发的密码学基础普及 | Ideal Area</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Ideal Area" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Ideal Area</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA"><span class="nav-number">1.</span> <span class="nav-text">RSA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ECC"><span class="nav-number">2.</span> <span class="nav-text">ECC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BE%A4"><span class="nav-number">2.1.</span> <span class="nav-text">群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E4%B8%8A%E7%9A%84%E7%BE%A4%E8%AE%BA"><span class="nav-number">2.2.</span> <span class="nav-text">椭圆曲线上的群论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%8A%A0%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">几何加法</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Whisker17</p>
+  <div class="site-description" itemprop="description">Blockchain | Cryptography</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://whisker17.github.io/2020/08/28/rsa-vs-ecc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Whisker17">
+      <meta itemprop="description" content="Blockchain | Cryptography">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ideal Area">
+    </span>
+
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          由 RSA VS ECC 引发的密码学基础普及
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-28 22:36:37" itemprop="dateCreated datePublished" datetime="2020-08-28T22:36:37+08:00">2020-08-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-09 23:30:48" itemprop="dateModified" datetime="2020-09-09T23:30:48+08:00">2020-09-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cryptography-blockchain/" itemprop="url" rel="index"><span itemprop="name">cryptography | blockchain</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>为什么在现阶段众多的区块链项目的选择依旧是 ECC 而不是 RSA 呢？这两种加密算法又有什么区别和各自的优缺点呢？</p>
+  <a id="more"></a>
+<p>RSA 加密算法是一种非对称加密算法，什么是非对称加密算法呢？简单来说就是加密和解密不是互为逆过程，下面先给大家普及一下<strong>对称加密算法和非对称加密算法的区别</strong>：</p>
+<p>如果有这样一个场景， Alice 和 Bob 有想要共享的明文，两者要如何传递这个信息而不用担心被第三方窃听到呢？对于<strong>对称加密</strong>而言，只需要 Alice 和 Bob 双方共同拥有一个密钥， Alice 这边用这个密钥对明文进行加密，然后发送给 Bob 。所有第三方由于没有这个密钥，是无法破解这串密文的，但是到了 Bob 这端， Bob 可以用密钥进行解密，从而得到明文，这样加密和解密是不是就是一个逆过程了。但是，这样的方案有严重的缺陷，实际情况中我们无法让 Alice 和 Bob 提前商量好使用同一个密钥而不被第三方窃听到，如果能做到这样的保证，那我们为什么不直接让双方进行明文的共享呢？</p>
+<p>而对于非对称加密而言，密钥有两种：公钥和私钥。公钥用于加密，私钥用于解密。针对当前这个例子， Alice 用公开的公钥对明文进行加密，只有 Bob 拥有这个公钥所对应的私钥，那么也就意味着只有 Bob 才能对这串密文进行解密，这也就达到了我们的目的。</p>
+<h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><p>对极大整数做因数分解的难度决定了 RSA 算法的可靠性。也就是说，假如有人找到一种快速因数分解的算法的话，那么用 RSA 加密的信息的可靠性就会极度下降。当然这种可能性是非常低的。现阶段，只有短的 RSA 密钥才可能被暴力破解，但是只要其密钥的长度足够长，用 RSA 加密的信息实际上是不能被破解的。总的来说， RSA 就是利用了：</p>
+<ol>
+<li>对两个质数相乘很简单，但是将其积分解成两个质数却很难，即 <script type="math/tex">n=p_1*p_2</script> ，已知 p1 和 p2 ，求 n 很简单，但是已知 n ，却很难求得 p1 和 p2 。</li>
+<li><script type="math/tex">{m^e}\ mod \ n=c</script> ，已知 m，e，n 求 c 很简单，反之却很难。</li>
+</ol>
+<p>下面是算法的具体步骤：</p>
+<ol>
+<li>随机选取两个<strong>不同</strong>的素数 p，q</li>
+<li>将 p，q 相乘，即 <script type="math/tex">n=p*q</script> </li>
+<li>计算 n 的欧拉函数 <script type="math/tex">\psi(n)</script> ，欧拉函数证明，当 p，q 为不相同的素数时， <script type="math/tex">\psi(n)=(p-1)(q-1)</script> 。</li>
+<li>随机选择一个整数 e ，满足两个条件： <script type="math/tex">\psi(n)</script> 与 e 互质，且 1 &lt; e &lt;  <script type="math/tex">\psi(n)</script> 。</li>
+<li>计算 e 对于 <script type="math/tex">\psi(n)</script> 的模反元素 d ，即找到一个 d 满足 <script type="math/tex">ed=1\ mod\ \psi(n)</script> 。上述条件等价于 <script type="math/tex">ed-1=k\psi(n)</script> ，求 (d,k) 的整数解。这个方程可以用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95">扩展欧几里得算法</a>求得。</li>
+<li>最终把 (e,n) 封装成公钥，(d,n) 封装成私钥。 </li>
+</ol>
+<p>最终加密的过程即为 <script type="math/tex">C=M^e\ mod \ n</script> ，而解密的过程即为 <script type="math/tex">M=C^d\ mod\ n</script> 。</p>
+<h2 id="ECC"><a href="#ECC" class="headerlink" title="ECC"></a>ECC</h2><p>什么是椭圆曲线？<strong>一条椭圆曲线就是一组被 <script type="math/tex">y_2=x^3+ax+b</script> 定义的且满足 <script type="math/tex">4a^3+27b^2\neq0</script> 的点集。</strong>  <script type="math/tex">4a^3+27b^2\neq0</script> 这个条件是为了保证曲线不包含奇点。 </p>
+<p>​                                                                                   <img src="/.io//v2-1d205ac7a84a53685519cdf801a32abd_720w.png" alt="不同的椭圆曲线对应的不同形状 ( b=1,a从2到-3 ) "></p>
+<p><img src="/.io//v2-06eb5f52f137a038bf2c446a411c4324_720w.png" alt="奇异点：左图，带锐点(式1)；右图，曲线自交（式2）。他们都不是有效的椭圆曲线"></p>
+<blockquote>
+<p>式1： <script type="math/tex">y^2=x^3</script><br>式2：<script type="math/tex">y^2=x^3-3x+2</script></p>
+</blockquote>
+<p>随着a和b的不同，椭圆曲线也会在平面上呈现出不同的形状，但他还是很容易辨认的，<strong>椭圆曲线始终是关于x轴对称的。</strong></p>
+<p>另外，我们还需要一个无穷处的点作为曲线的一部分，从现在开始，我们将用 0 这个符号表示无穷处的点。如果我们将无穷处的点也考虑进来的话，那么椭圆曲线的表达式精炼为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=+%5Cleft%5C%7B+%28x%2C+y%29+%5Cin+%5Cmathbb%7BR%7D%5E2%5C+%7C%5C+y%5E2+%3D+x%5E3+%2B+ax+%2B+b%2C%5C+4+a%5E3+%2B+27+b%5E2+%5Cne+0+%5Cright%5C%7D%5C+%5Ccup%5C+%5Cleft%5C%7B+0+%5Cright%5C%7D" alt="[公式]"></p>
+<p>我们已经看到了椭圆曲线的图象，但点与点之间好象没有什么联系。我们能不能建立一个类似于在实数轴上加法的运算法则呢？这就要定义椭圆曲线的加法群，这里需要用到近世代数中<strong>阿贝尔群</strong>。</p>
+<h3 id="群"><a href="#群" class="headerlink" title="群"></a>群</h3><p>群是一种代数结构，由一个集合以及一个二元运算所组成。已知集合和运算(G,*)如果是群则必须满足如下要求：</p>
+<ul>
+<li>封闭性：∀a,b∈G，a*b ∈ G</li>
+<li>结合性： ∀a,b,c∈G ，有 (a<em>b)</em>c = a<em> (b</em>c)</li>
+<li>单位元：ョe∈G， ∀a ∈G，有e<em>a = a</em>e = a</li>
+<li>逆元： ∀a ∈G ，ョb∈G 使得 a<em>b = b</em>a = e</li>
+</ul>
+<p><strong>阿贝尔群除了上面的性质还满足交换律公理(a<em>b)</em>c = a<em> (b</em>c)</strong></p>
+<h3 id="椭圆曲线上的群论"><a href="#椭圆曲线上的群论" class="headerlink" title="椭圆曲线上的群论"></a><strong>椭圆曲线上的群论</strong></h3><p>我们可以在椭圆曲线上定义一个群：</p>
+<ol>
+<li>群中的元素就是椭圆曲线上的点。</li>
+<li>单位元就是无穷处的点0.</li>
+<li>相反数P，是关于X轴对称的另一边的点。</li>
+<li>加法规则定义如下：取一条直线上的三点（这条直线和椭圆曲线相交的三点），P, Q, R（皆非零），他们的总和等于0，P+Q+R=0。</li>
+</ol>
+<p><img src="https://pic4.zhimg.com/80/v2-94a567939b88645be83086a53469cfc5_720w.jpg" alt="三个对齐的点的和是0"></p>
+<p>请注意最后一条规则，我们仅仅说了需要三个在一条直线上的点，并没有规定他们的顺序。这就意味着，如果P, Q, R在一条直线上的话，他们满足</p>
+<p>P+(Q+R)=Q+(P+R)=R+(P+Q)=⋯=0。</p>
+<p>这样，我们可以直观的证明：+运算符是符合交换律和结合律的，这是一个阿贝尔群。</p>
+<h3 id="几何加法"><a href="#几何加法" class="headerlink" title="几何加法"></a>几何加法</h3><p>任意取椭圆曲线上两点P、Q（若P、Q两点重合，则作P点的切线），作直线交于椭圆曲线的另一点R’，过R’做y轴的平行线交于R，定义P+Q=R。这样，加法的和也在椭圆曲线上，并同样具备加法的交换律、结合律</p>
+<p><img src="/.io//v2-2f6f71e39cf1da5723c1a48c5d4eebc2_720w.png" alt></p>
+<p>这个几何方法非常有用但是还需要再精炼一下。让我们来回答一下以下几个问题：</p>
+<ul>
+<li>如果 P = 0或者 Q = 0 呢？很明显，这样我们是画不出线的，无穷远点0 不在xy平面上。但是我们已经定义了0作为单位元。 P + 0 = P 和 Q + 0 = Q，对于任意的P和Q都适用，单位元的作用就是与任意元素运算不改变其值的元素。</li>
+<li>如果P = -Q呢？ 在这种情况下，穿过两点的直线是垂直的，没有相交的第三个点。但是呢，如果P是Q的相反数，然后我们将会从相反数的定义中得到 P+Q=P+(−P)=0。</li>
+<li>如果P = Q呢？ 在这种情况下，有无数条线会经过这个点。我们假设一个点 <script type="math/tex">Q^{'}\neq P</script> . 当Q’越来越接近P的时候会发生什么？</li>
+</ul>
+<p><img src="/.io//v2-91b444e4c0e4c386495cb359b064c655_b.gif" alt="当两点越来越接近，穿过两点的直线将会和曲线相切"></p>
+<p>当出现切线这种情况，鉴于此我们可以写成P+P=−R，R是曲线和切线的交点，P是切点。</p>
+<ul>
+<li>如果当P!=Q，但是没有第三点R呢？这种情况与上一条非常相似。事实上，这种情况就是一条直线穿过P和Q与曲线相切。</li>
+</ul>
+<p><img src="/.io//v2-ba1669a982efc7cd7786c74c372dfecd_b.gif" alt="如果直线和曲线仅相交于两点，这意味着直线是曲线的切线。P+Q的结果显而易见是其中一个点关于X轴的对称点。"></p>
+<p>椭圆曲线是连续的，并不适合用于加密；所以，我们必须把椭圆曲线变成离散的点，我们要把椭圆曲线定义在有限域上。于是我们就引出了模运算，将无限域上的点转化到了有限域上，从而达到了加密的意图。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/24/ring-signature/" rel="prev" title="ring signature">
+      <i class="fa fa-chevron-left"></i> ring signature
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/01/pedersen-commitment/" rel="next" title="pedersen commitment">
+      pedersen commitment <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Whisker17</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

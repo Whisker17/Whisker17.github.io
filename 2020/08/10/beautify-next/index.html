@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"whisker17.github.io","root":"/","scheme":"Muse","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false};
+  </script>
+
+  <meta name="description" content="接下来我们来介绍一下基于 Next 主题的进阶优化 修改主题首先我们先将 Hexo 默认的主题修改为 Next 主题：  安装 Next 主题  1npm install hexo-theme-next  修改网站配置文件 _config.yml ，找到 theme 字段，修改为：  1theme: next">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对基于Next的Blog进行美化">
+<meta property="og:url" content="https://whisker17.github.io/2020/08/10/beautify-next/index.html">
+<meta property="og:site_name" content="Ideal Area">
+<meta property="og:description" content="接下来我们来介绍一下基于 Next 主题的进阶优化 修改主题首先我们先将 Hexo 默认的主题修改为 Next 主题：  安装 Next 主题  1npm install hexo-theme-next  修改网站配置文件 _config.yml ，找到 theme 字段，修改为：  1theme: next">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://whisker17.github.io/.io//2020-08-10_18-51.png">
+<meta property="article:published_time" content="2020-08-10T03:00:40.000Z">
+<meta property="article:modified_time" content="2020-09-09T15:30:48.986Z">
+<meta property="article:author" content="Whisker17">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://whisker17.github.io/.io//2020-08-10_18-51.png">
+
+<link rel="canonical" href="https://whisker17.github.io/2020/08/10/beautify-next/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>对基于Next的Blog进行美化 | Ideal Area</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Ideal Area" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Ideal Area</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E4%B8%BB%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">修改主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E8%AF%AD%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">设置语言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">初始化设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%A4%B4%E5%83%8F"><span class="nav-number">4.</span> <span class="nav-text">设置头像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E8%8F%9C%E5%8D%95"><span class="nav-number">5.</span> <span class="nav-text">设置菜单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E4%BE%A7%E8%BE%B9%E6%A0%8F"><span class="nav-number">6.</span> <span class="nav-text">设置侧边栏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E6%96%87%E7%AB%A0%E9%98%85%E8%AF%BB%E7%BB%9F%E8%AE%A1"><span class="nav-number">7.</span> <span class="nav-text">增加文章阅读统计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-LeanCloud"><span class="nav-number">7.1.</span> <span class="nav-text">配置 LeanCloud</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E5%9B%BE%E7%89%87%E9%A2%84%E8%A7%88"><span class="nav-number">8.</span> <span class="nav-text">开启图片预览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E4%B8%8D%E8%92%9C%E5%AD%90%E5%9C%A8%E5%BA%95%E9%83%A8%E5%A2%9E%E5%8A%A0%E8%AE%BF%E5%AE%A2%E8%AE%A1%E6%95%B0"><span class="nav-number">9.</span> <span class="nav-text">利用不蒜子在底部增加访客计数</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Whisker17</p>
+  <div class="site-description" itemprop="description">Blockchain | Cryptography</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://whisker17.github.io/2020/08/10/beautify-next/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Whisker17">
+      <meta itemprop="description" content="Blockchain | Cryptography">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ideal Area">
+    </span>
+
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          对基于Next的Blog进行美化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-10 11:00:40" itemprop="dateCreated datePublished" datetime="2020-08-10T11:00:40+08:00">2020-08-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-09 23:30:48" itemprop="dateModified" datetime="2020-09-09T23:30:48+08:00">2020-09-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/blog/" itemprop="url" rel="index"><span itemprop="name">blog</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>接下来我们来介绍一下基于 Next 主题的进阶优化</p>
+<h3 id="修改主题"><a href="#修改主题" class="headerlink" title="修改主题"></a>修改主题</h3><p>首先我们先将 Hexo 默认的主题修改为 Next 主题：</p>
+<ul>
+<li>安装 Next 主题</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-theme-next</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改网站配置文件 <code>_config.yml</code> ，找到 theme 字段，修改为：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">theme: next</span><br></pre></td></tr></table></figure>
+  <a id="more"></a>
+<ul>
+<li>修改<strong>主题的配置文件</strong><code>_config.yml</code> ，找到 Schemes 字段，选择自己喜欢的 Next 主题：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># Next主题可选样式</span><br><span class="line"># Schemes</span><br><span class="line">## Muse - 默认 Scheme，这是 NexT 最初的版本，黑白主调，大量留白</span><br><span class="line">## Mist - Muse 的紧凑版本，整洁有序的单栏外观</span><br><span class="line">## Pisces - 双栏 Scheme，小家碧玉似的清新</span><br><span class="line"># scheme: MUSE</span><br><span class="line">scheme: Mist</span><br><span class="line"># scheme: Pisces</span><br><span class="line"># scheme: Gemini</span><br></pre></td></tr></table></figure>
+<h3 id="设置语言"><a href="#设置语言" class="headerlink" title="设置语言"></a>设置语言</h3><ul>
+<li>修改<strong>网站配置文件</strong> <code>_config.yml</code> ，找到 language 字段，修改为：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">language: zh-CN</span><br></pre></td></tr></table></figure>
+<h3 id="初始化设置"><a href="#初始化设置" class="headerlink" title="初始化设置"></a>初始化设置</h3><ul>
+<li>配置文章默认格式，这样我们就有了一个 blog 的默认格式了        </li>
+</ul>
+<p>修改<code>/scaffolds/post.md</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: &#123;&#123; title &#125;&#125;</span><br><span class="line">date: &#123;&#123; date &#125;&#125;</span><br><span class="line">top: false</span><br><span class="line">cover: false</span><br><span class="line">password:</span><br><span class="line">toc: true</span><br><span class="line">mathjax: true</span><br><span class="line">summary:</span><br><span class="line">tags:</span><br><span class="line">categories:</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<h3 id="设置头像"><a href="#设置头像" class="headerlink" title="设置头像"></a>设置头像</h3><ul>
+<li>修改<strong>主题的配置文件</strong><code>_config.yml</code> ，找到 avatar 字段，修改 url 字段</li>
+</ul>
+<h3 id="设置菜单"><a href="#设置菜单" class="headerlink" title="设置菜单"></a>设置菜单</h3><p>菜单的设置同样是通过修改<strong>主题的配置文件</strong><code>_config.yml</code> ：</p>
+<ul>
+<li>找到 <code>menu</code> 字段，如图：</li>
+</ul>
+<p><img src="/.io//2020-08-10_18-51.png" alt="2020-08-10_18-51"></p>
+<p>我们可以看到菜单的配置是有三个部分组成的，第一项是菜单项，第二项是菜单的名称，最后一项是菜单所对应的图标。在 Next 中所调用的图标都是由 <a target="_blank" rel="noopener" href="http://fontawesome.io/">Font Awesome</a> 提供的。</p>
+<p>NexT 默认的菜单项有（标注*的项表示需要手动创建这个页面）：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">键值</th>
+<th style="text-align:left">设定值</th>
+<th style="text-align:left">显示文本（简体中文）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">home</td>
+<td style="text-align:left"><code>home: /</code></td>
+<td style="text-align:left">主页</td>
+</tr>
+<tr>
+<td style="text-align:left">archives</td>
+<td style="text-align:left"><code>archives: /archives</code></td>
+<td style="text-align:left">归档页</td>
+</tr>
+<tr>
+<td style="text-align:left">categories</td>
+<td style="text-align:left"><code>categories: /categories</code></td>
+<td style="text-align:left">分类页 *</td>
+</tr>
+<tr>
+<td style="text-align:left">tags</td>
+<td style="text-align:left"><code>tags: /tags</code></td>
+<td style="text-align:left">标签页 *</td>
+</tr>
+<tr>
+<td style="text-align:left">about</td>
+<td style="text-align:left"><code>about: /about</code></td>
+<td style="text-align:left">关于页面 *</td>
+</tr>
+<tr>
+<td style="text-align:left">commonweal</td>
+<td style="text-align:left"><code>commonweal: /404.html</code></td>
+<td style="text-align:left">公益 404 *</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>当然，我们也可以自己创建新的菜单选项，但是由于不是官方支持的菜单项，所以无法进行翻译，所以需要自己进行设置：</li>
+</ul>
+<p>在 <code>languages/zh-CN.yml</code> 配置文件中找到 <code>menu</code> 字段，进行一个键值对的添加</p>
+<h3 id="设置侧边栏"><a href="#设置侧边栏" class="headerlink" title="设置侧边栏"></a>设置侧边栏</h3><p>侧边栏的设置包括两方面，一是侧边栏的位置，另一个是侧边栏出现的时机。都是通过修改<strong>主题的配置文件</strong><code>_config.yml</code> 来实现的，找到 <code>sidebar</code> 字段：</p>
+<ol>
+<li><p>通过修改 <code>position</code> 字段，可以将侧边栏置左或者置右</p>
+</li>
+<li><p>通过修改 <code>display</code> 字段，可以设置侧边栏显示的时机：</p>
+<ul>
+<li><code>post</code> - 默认行为，在文章页面（拥有目录列表）时显示</li>
+<li><code>always</code> - 在所有页面中都显示</li>
+<li><code>hide</code> - 在所有页面中都隐藏（可以手动展开）</li>
+<li><code>remove</code> - 完全移除</li>
+</ul>
+</li>
+</ol>
+<h3 id="增加文章阅读统计"><a href="#增加文章阅读统计" class="headerlink" title="增加文章阅读统计"></a>增加文章阅读统计</h3><h4 id="配置-LeanCloud"><a href="#配置-LeanCloud" class="headerlink" title="配置 LeanCloud"></a>配置 LeanCloud</h4><p>我们要达到文章访问人数的统计就需要拿到相应的 AppID 以及 AppKey ，下面就是详细过程：</p>
+<ul>
+<li><strong>创建应用</strong><ul>
+<li>在出现的界面点击<code>创建应用</code></li>
+<li>新建 class，注意为了保证对 Next 主题的修改兼容，新建的 Class 名字必须为 <code>Counter</code>，对于所有权限的设置都选择 <code>所有用户</code></li>
+<li>选择左侧的 <code>设置 -&gt; 应用Keys</code> ，由此我们就获得了需要的 AppID 以及 AppKey</li>
+</ul>
+</li>
+<li>修改<strong>主题的配置文件</strong><code>_config.yml</code> ，找到 <code>leancloud_visitors</code> 字段，修改其中的 AppID 和 AppKey ，并将 <code>security</code> 字段改为 <code>false</code></li>
+</ul>
+<blockquote>
+<p>需要特别说明的是：记录文章访问量的唯一标识符是文章的<code>发布日期</code>以及<code>文章的标题</code>，因此请确保这两个数值组合的唯一性，如果你更改了这两个数值，会造成文章阅读数值的清零重计。</p>
+</blockquote>
+<h3 id="开启图片预览"><a href="#开启图片预览" class="headerlink" title="开启图片预览"></a>开启图片预览</h3><ul>
+<li>下载插件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;theme-next-fancybox3 fancybox</span><br></pre></td></tr></table></figure>
+<ul>
+<li>移动到 Next 主题下，我的路径为 <code>node_modules/hexo-theme-next/source/lib/</code></li>
+<li>修改<strong>主题的配置文件</strong><code>_config.yml</code> ，找到 <code>fancybox</code> 字段，修改为 <code>true</code></li>
+</ul>
+<h3 id="利用不蒜子在底部增加访客计数"><a href="#利用不蒜子在底部增加访客计数" class="headerlink" title="利用不蒜子在底部增加访客计数"></a>利用不蒜子在底部增加访客计数</h3><ul>
+<li>修改<strong>主题的配置文件</strong><code>_config.yml</code> ，找到 <code>busuanzi_count</code> 字段，修改为 <code>true</code></li>
+<li>将其中 <code>post_views</code> 字段改为 <code>false</code></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/09/build-blogs/" rel="prev" title="使用hexo以及github pages搭建个人网站">
+      <i class="fa fa-chevron-left"></i> 使用hexo以及github pages搭建个人网站
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/10/next-bug-fix/" rel="next" title="Blog 搭建错误总结">
+      Blog 搭建错误总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Whisker17</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
