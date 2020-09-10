@@ -810,4 +810,9 @@ c_{n-1}=Hash(m,s_{n-2}*G+c_{n-2}*pk_{n-2})\\</script><ol>
         <category>Cryptography | Math</category>
       </categories>
   </entry>
+  <entry>
+    <title>Zk-SNARKs: Under the Hood</title>
+    <url>/2020/09/10/Zk-SNARKs-Under-the-Hood/</url>
+    <content><![CDATA[]]></content>
+  </entry>
 </search>

@@ -6,7 +6,7 @@
   <link href="https://whisker17.github.io/atom.xml" rel="self"/>
   
   <link href="https://whisker17.github.io/"/>
-  <updated>2020-09-10T07:31:24.399Z</updated>
+  <updated>2020-09-10T11:20:27.519Z</updated>
   <id>https://whisker17.github.io/</id>
   
   <author>
@@ -15,6 +15,19 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Zk-SNARKs: Under the Hood</title>
+    <link href="https://whisker17.github.io/2020/09/10/Zk-SNARKs-Under-the-Hood/"/>
+    <id>https://whisker17.github.io/2020/09/10/Zk-SNARKs-Under-the-Hood/</id>
+    <published>2020-09-10T11:20:27.000Z</published>
+    <updated>2020-09-10T11:20:27.519Z</updated>
+    
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>探索椭圆曲线配对</title>
