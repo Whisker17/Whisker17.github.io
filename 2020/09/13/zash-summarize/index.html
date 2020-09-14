@@ -29,10 +29,12 @@
 <meta property="og:site_name" content="Ideal Area">
 <meta property="og:description" content="原文：Zk-SNARKs: Under the Hood">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://whisker17.github.io/.io//9787609-41e2c7cb6121eea8.webp">
 <meta property="article:published_time" content="2020-09-13T12:15:33.000Z">
-<meta property="article:modified_time" content="2020-09-13T15:14:12.139Z">
+<meta property="article:modified_time" content="2020-09-14T14:29:23.727Z">
 <meta property="article:author" content="Whisker17">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://whisker17.github.io/.io//9787609-41e2c7cb6121eea8.webp">
 
 <link rel="canonical" href="https://whisker17.github.io/2020/09/13/zash-summarize/">
 
@@ -149,7 +151,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%80%81%E9%9A%90%E8%97%8F"><span class="nav-number">1.</span> <span class="nav-text">同态隐藏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%92%8C%E7%BA%BF%E6%80%A7%E7%BB%84%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">多项式和线性组合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E7%9A%84%E7%9B%B2%E8%AE%A1%E7%AE%97"><span class="nav-number">3.</span> <span class="nav-text">多项式的盲计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E6%95%B0%E7%9F%A5%E8%AF%86%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">系数知识测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E7%9A%84-KCA"><span class="nav-number">5.</span> <span class="nav-text">扩展的 KCA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E9%AA%8C%E8%AF%81%E7%9A%84%E5%A4%9A%E9%A1%B9%E5%BC%8F%E7%9B%B2%E8%AE%A1%E7%AE%97%E5%8D%8F%E8%AE%AE"><span class="nav-number">6.</span> <span class="nav-text">可验证的多项式盲计算协议</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%80%81%E9%9A%90%E8%97%8F"><span class="nav-number">1.</span> <span class="nav-text">同态隐藏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%92%8C%E7%BA%BF%E6%80%A7%E7%BB%84%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">多项式和线性组合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E7%9A%84%E7%9B%B2%E8%AE%A1%E7%AE%97"><span class="nav-number">3.</span> <span class="nav-text">多项式的盲计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E6%95%B0%E7%9F%A5%E8%AF%86%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">系数知识测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E7%9A%84-KCA"><span class="nav-number">5.</span> <span class="nav-text">扩展的 KCA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E9%AA%8C%E8%AF%81%E7%9A%84%E5%A4%9A%E9%A1%B9%E5%BC%8F%E7%9B%B2%E8%AE%A1%E7%AE%97%E5%8D%8F%E8%AE%AE"><span class="nav-number">6.</span> <span class="nav-text">可验证的多项式盲计算协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%94%B5%E8%B7%AF"><span class="nav-number">7.</span> <span class="nav-text">运算电路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QAP"><span class="nav-number">8.</span> <span class="nav-text">QAP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pinocchio-%E5%8D%8F%E8%AE%AE"><span class="nav-number">9.</span> <span class="nav-text">Pinocchio 协议</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -228,10 +230,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-09-13 20:15:33 / 修改时间：23:14:12" itemprop="dateCreated datePublished" datetime="2020-09-13T20:15:33+08:00">2020-09-13</time>
+              <time title="创建时间：2020-09-13 20:15:33" itemprop="dateCreated datePublished" datetime="2020-09-13T20:15:33+08:00">2020-09-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-14 22:29:23" itemprop="dateModified" datetime="2020-09-14T22:29:23+08:00">2020-09-14</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -322,6 +330,53 @@
 </ol>
 <p>首先，提醒一下，在给定了P的系数之后，<script type="math/tex">P(s)*g是g, s*g, ..., s^d*g</script>的线性组合，<script type="math/tex">\alpha P(s)*g</script>是<script type="math/tex">\alpha * g, \alpha s*g, ..., \alpha s^d *g</script>的线性组合，那么，根据之前的内容，Alice的确是可以从Bob发送的信息中计算出这些值的。</p>
 <p>其次，通过 d-KCA 我们知道，在这整个过程中，Alice知道<script type="math/tex">c_0, ..., c_d \in \mathbb{F}_p</script>,使得<script type="math/tex">a=\sum_{i=0}^d c_i s^i *g，因为a = P(s) *g</script>，所以Alice知道这么一个多项式<script type="math/tex">P(X) = \sum_{i=0}^d c_i*X^i</script>。也就是说，假如Alice不知道这么个多项式，她瞎蒙一个结果能通过Bob的验证的可能性极小。</p>
+<h2 id="运算电路"><a href="#运算电路" class="headerlink" title="运算电路"></a>运算电路</h2><p>假设，Alice想要向Bob证明她知道<script type="math/tex">c_1, c_2, c_3 \in \mathbb{F}_p</script>，并使得<script type="math/tex">(c_1*c_2) * (c_1 + c_3) = 7</script>。第一步，我们先把上面的计算转化一个运算电路。</p>
+<p><img src="/.io//9787609-41e2c7cb6121eea8.webp" alt></p>
+<p>针对电路的一个合法的赋值，是给被标记线的赋值，使得每个乘法门的输出值确实是相应输入的乘积。</p>
+<p>因此，对于我们的电路，一个合乎规范的赋值形式是：<script type="math/tex">(c_1,…,c_5) 其中 c_4=c_1*c_2 并且 c_5=c_4*(c_1+c_3)</script>。</p>
+<p>按照这种方式，Alice想要证明的是，她知道一组合法的赋值(<script type="math/tex">c_1, ..., c_5)，可以满足c_5=7</script>。下一步，是使用 QAP 将这个语句翻译成一个多项式。</p>
+<h2 id="QAP"><a href="#QAP" class="headerlink" title="QAP"></a>QAP</h2><p>我们将每个乘法门与域元素联系起来：<script type="math/tex">g_1将与1 \in \mathbb{F}_p</script>联系起来，<script type="math/tex">g_2 与 2 \in \mathbb{F}_p</script> 联系起来。我们称点{1,2}为我们的目标点。现在，我们需要定义 “左线多项式”集合 <script type="math/tex">L_1,…,L_5</script> , “右线多项式” 集合<script type="math/tex">R_1,…,R_5</script> 以及 “输出多项式” 集合：<script type="math/tex">O_1,…,O_5</script>。</p>
+<p>这些定义的想法是，非乘法门所涉及的多项式在目标点的取值一般为零。</p>
+<p>具体来说，<script type="math/tex">像w_1,w_2,w_4各自是g_1的左、右、和输出线</script>；我们定义<script type="math/tex">L_1=R_2=O_4=2-X</script>，因为多项式2-X，根据<script type="math/tex">g_1，在1点值是1，根据g_2</script>，多项式在2点值是0。</p>
+<p>注意到<script type="math/tex">w_1 和 w_3都是g_2</script>的右输入。因此我们同样定义<script type="math/tex">L_4=R_1=R_3=O_5=X-1</script>——因为，根据<script type="math/tex">g_2</script>，X-1在目标点2是1，而在另外一个点是0。</p>
+<p>我们将其余的多项式都设置成零多项式。(即 <script type="math/tex">L_2=L_3=L_5=R_2=R_4=R_5=O_1=O_2=O_3 = 0</script>)</p>
+<p>给定 (<script type="math/tex">c_1,…,c_5</script>) 固定值，我们用他们作为系数来定义一个左、右和输出的“和”多项式。也就是说，我们定义：</p>
+<script type="math/tex; mode=display">L := \sum_{i=1}^5 c_i * L_i, R := \sum_{i=1}^5 c_i * R_i, O := \sum_{i=1}^5 c_i * O_i</script><p>然后我们定义多项式 P := L * R - O</p>
+<p>现在，在完成所有这些定义之后，核心点在于：当且仅当P在所有的目标点上等于0时， (<script type="math/tex">c_1,…,c_5</script>)才是一个对于电路的合法赋值。</p>
+<p>我们已知：</p>
+<script type="math/tex; mode=display">L(X) = \sum_{i=1}^5 c_i * L_i = c_1(2-X)+c_4(X-1)</script><script type="math/tex; mode=display">R(X) = \sum_{i=1}^5 c_i * R_i = c_1(X-1)+c_2(2-X)</script><script type="math/tex; mode=display">O(X) = \sum_{i=1}^5 c_i * R_i = c_4(2-X)+c_5(X-1)</script><p>让我们使用例子来验证一下。假设我们定义 L,R,O,P ，采用上述给出的<script type="math/tex">c_1,…,c_5</script>。让我们在目标点 1 上计算所有的这些多项式：</p>
+<p>在所有的<script type="math/tex">L_i</script>中，只有<script type="math/tex">L_1</script>在1点上是非零的。因此我们有<script type="math/tex">L(1)=c_1⋅L_1(1)=c_1</script>。同样，我们可以得到<script type="math/tex">R(1)=c_2 和 O(1)=c_4</script>。</p>
+<p>因此，<script type="math/tex">P(1)=c_1*c_2-c_4</script>。 类似的可以计算出： <script type="math/tex">P(2)=c_4*(c_1+c_3)-c_5</script>。</p>
+<p>换句话说，当且仅当<script type="math/tex">(c_1, ..., c_5)</script>是一组正确的赋值的时候，P在所有的目标点为0</p>
+<p>现在，我们使用下面的代数事实：对于一个多项式 P 和一个点 <script type="math/tex">a \in \mathbb{F}_p</script>，当且仅当多项式 X-a 可以整除 P 时，我们有 P(a) = 0 ，比如 P=(X - a) * H ，H是某个多项式。</p>
+<p>定义目标多项式 T(X) := (X-1)*(X-2)，当且仅当<script type="math/tex">(c_1,…,c_5)</script> 是一个合法的赋值时，我们有T 能整除 P。</p>
+<p>根据上面的讨论，我们对于 QAP 做出如下定义：</p>
+<p>一个 d 阶 m 大小的二次算术程序(QAP) Q，由多项式<script type="math/tex">L_1,…,L_m, R_1,…,R_m, O_1,…,O_m</script> 和 一个d阶目标多项式 T 构成。</p>
+<p>如果给(<script type="math/tex">c_1,…,c_m</script>) 的赋值满足 Q，定义</p>
+<script type="math/tex; mode=display">L:=\sum_{i=1}^m c_i⋅L_i</script><script type="math/tex; mode=display">R:=\sum_{i=1}^m c_i⋅R_i</script><script type="math/tex; mode=display">O:=\sum_{i=1}^m c_i⋅O_i</script><p> 和<br> P:=L⋅R-O<br> 我们可以确定T可以整除P。</p>
+<p>在这个语境中，Alice想要证明她知道一组赋值(<script type="math/tex">c_1,...,c_5</script>)满足上述的QAP,并且<script type="math/tex">c_5 = 7</script>。</p>
+<p>总之，我们已经看到，像“我知道<script type="math/tex">c_1,c_2,c_3能满足(c_1⋅c_2)⋅(c_1+c_3)=7”</script>这样的语句，是怎么样通过QAP被转换成等价的多项式语句的。</p>
+<h2 id="Pinocchio-协议"><a href="#Pinocchio-协议" class="headerlink" title="Pinocchio 协议"></a>Pinocchio 协议</h2><p>如果Alice有一个正确的赋值，意思是，像上面那样定义 L,R,O,P ，则存在一个多项式H，使得 P = H <em> T 。特别地，对于任意 <script type="math/tex">s \in \mathbb{F}_p</script>，我们都有P(s) = H(s) </em> T(s)</p>
+<p>现在假如Alice没有一个正确的赋值，但是她用一个不满足条件的赋值(<script type="math/tex">c_1,..., c_m</script>)构造L, R, O, P，那么我们可以保证T不能整除P。这是说，对于任意一个阶次不大于d的多项式H，P, L, R, O, H都将是不同的多项式。注意，这里的P, L, R, O, H的阶次都最多不会超过2d。</p>
+<p>现在我们可以用著名的 Schwartz-Zippel 定理了，它告诉我们，两个不同的阶次不大于2d的多项式，他们最多有2d个共同的点 <script type="math/tex">s \in \mathbb{F}_p</script>。因此，如果p比2d大很多，那么随机选择一个s就能满足P(s) = H(s) * T(s)的概率非常低。</p>
+<p>于是可以草拟出下面这个可以验证Alice是否有一组正确赋值的协议：</p>
+<ol>
+<li>Alice选择如下阶次不大于d的多项式：L, R, O, H。</li>
+<li>Bob选择一个随机的点 <script type="math/tex">s \in \mathbb{F}_{p}</script>，并计算出E(T(s))。</li>
+<li>Alice把那些多项式在点s处的隐藏数(E(L(s)), E(R(s)), E(O(s)), E(H(s)))发送给Bob。</li>
+<li>Bob检查如下方程是否在s处成立：E(L(s) <em> R(s) - O(s)) = E(T(s) </em> H(s))</li>
+</ol>
+<p>再强调一次，如果Alice没有一组正确的赋值，那么她所使用的方程大概率下在s点不能成立，因此，在这种情况，她将不能通过Bob的验证。</p>
+<p>如果Alice没有一组正确的赋值，也并不意味着她不能找到任何的阶次不大于<code>d</code>的，并且满足如下条件的L,R,O,H：L <em> R - O = T </em> H。这仅仅是说她不能通过同一组赋值(<script type="math/tex">c_1, ..., c_m</script>)得到这样的多项式: <script type="math/tex">L:=\sum_{i=1}^m c_i*L_i, R:= \sum_{i=1}^m c_i* R_i, O := \sum_{i=1}^m c_i * O_i</script>。</p>
+<p>之前提到的可验证的多项式盲计算只能保证 Alice 使用了正确阶次的多项式 L，R，O，但不能保证他们是从过同一组赋值产生的。那么我们要如何解决这样的问题呢？</p>
+<p>我们把多项式L, R, O组合成一个多项式F:</p>
+<script type="math/tex; mode=display">F = L + X^{d+1} * R + X ^ {2(d+1)} * O</script><p>将R与<script type="math/tex">X^{d+1}</script>相乘、O与<script type="math/tex">x^{2(d+1)}</script>相乘的原因是，这样L, R, O的系数在F中不会混合：<script type="math/tex">1, X, ..., X^d</script>刚好是L的系数，后面d+1个系数<script type="math/tex">x^{d+1}, ..., X^{2d+1}</script>刚好是R的系数，最后d+1个系数是O的。</p>
+<p>让我们用同样的方式把QAP中的多项式组合起来，给每个<script type="math/tex">i \in {1, ..., m}</script>定义一个多项式<script type="math/tex">F_i</script>，它的第一部分d+1个系数是<script type="math/tex">L_i</script>的系数，之后的是<script type="math/tex">R_i</script>的系数，再之后是<script type="math/tex">Q_i</script>的系数。也就是说，对于每个<script type="math/tex">i \in {1, ..., m}</script>，我们定义这个多项式：</p>
+<script type="math/tex; mode=display">F_i = L_i + X^{d+1} * R_i + X^{2(d+1)} * O_i</script><p>注意，当我们把两个<script type="math/tex">F_i相加时，L_i, R_i, O_i</script>也分别相加。例如：</p>
+<p><script type="math/tex">F_1 + F_2 = (L_1 + L_2) + X^{d+1} * (R_1 + R_2) + X ^{2(d+1)} * (O_1 + O_2)</script>。</p>
+<p>更一般地，假设对于<script type="math/tex">(c_1, ..., c_m)我们有F = \sum_{i=1} ^m c_i * F_i</script>，那么我们将得到： <script type="math/tex">L = \sum_{i=1}^m c_i * L_i, R = \sum_{i=1}^m c_i * R_i, O = \sum_{i=1}^m c_i * O_i</script>，它们共用相同的(<script type="math/tex">c_1, ..., c_m</script>)。换句话说，如果F是<script type="math/tex">F_i</script>的线性组合，那么L, R, O就确实是从同一组赋值得到的。</p>
+<p>因此，Bob将会请Alice证明F是<script type="math/tex">F_i</script>的线性组合，这个过程和盲计算是类似的：</p>
+<p>Bob选择一个随机的<script type="math/tex">\beta \in \mathbb{F}_p^*</script>，并把隐藏数<script type="math/tex">E(\beta * F_i(s)), ..., E(\beta * F_m(s))</script>发送给Alice，并请Alice发回<script type="math/tex">E(\beta*F(s))</script>。如果她成功了，根据扩展版本的KCA假设，就代表Alice知道如何对<script type="math/tex">F_i</script>进行线性组合，从而计算出F。</p>
 
     </div>
 
