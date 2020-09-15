@@ -22,19 +22,19 @@
     var CONFIG = {"hostname":"whisker17.github.io","root":"/","scheme":"Muse","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false};
   </script>
 
-  <meta name="description" content="在本篇 Blog 中将会对在部署过程中发现的问题进行总结 访客计数出错 错误场景：  在使用 LeanCloud 时，发现填入 AppId 以及 AppKey 之后阅读数量出错，错误代码为 1Counter not initialized! More info at console err msg.  解决方案：   将 security 字段改为 false 安装了插件hexo-leanclou">
+  <meta name="description" content="我们都知道，在 ZK-SNARKs 中我们整合了许多工具，从而一步步达到了我们想要的目的，即零知识和证明。而双线性配对是其中非常重要的一环。为什么这么说呢，下面我们就来介绍一下双线性配对在零知识证明中的意义。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Blog 搭建错误总结">
-<meta property="og:url" content="https://whisker17.github.io/2020/08/10/next-bug-fix/index.html">
+<meta property="og:title" content="双线性配对在零知识证明中的作用">
+<meta property="og:url" content="https://whisker17.github.io/2020/09/15/bilinear-pairings-summarize/index.html">
 <meta property="og:site_name" content="Ideal Area">
-<meta property="og:description" content="在本篇 Blog 中将会对在部署过程中发现的问题进行总结 访客计数出错 错误场景：  在使用 LeanCloud 时，发现填入 AppId 以及 AppKey 之后阅读数量出错，错误代码为 1Counter not initialized! More info at console err msg.  解决方案：   将 security 字段改为 false 安装了插件hexo-leanclou">
+<meta property="og:description" content="我们都知道，在 ZK-SNARKs 中我们整合了许多工具，从而一步步达到了我们想要的目的，即零知识和证明。而双线性配对是其中非常重要的一环。为什么这么说呢，下面我们就来介绍一下双线性配对在零知识证明中的意义。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-08-10T13:16:00.000Z">
-<meta property="article:modified_time" content="2020-09-09T15:30:48.986Z">
+<meta property="article:published_time" content="2020-09-15T08:07:33.000Z">
+<meta property="article:modified_time" content="2020-09-15T10:38:00.882Z">
 <meta property="article:author" content="Whisker17">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://whisker17.github.io/2020/08/10/next-bug-fix/">
+<link rel="canonical" href="https://whisker17.github.io/2020/09/15/bilinear-pairings-summarize/">
 
 
 <script class="page-configurations">
@@ -47,7 +47,7 @@
   };
 </script>
 
-  <title>Blog 搭建错误总结 | Ideal Area</title>
+  <title>双线性配对在零知识证明中的作用 | Ideal Area</title>
   
 
 
@@ -149,7 +149,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BF%E5%AE%A2%E8%AE%A1%E6%95%B0%E5%87%BA%E9%94%99"><span class="nav-number">1.</span> <span class="nav-text">访客计数出错</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E5%AF%B9%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">配对的基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8C%E7%BA%BF%E6%80%A7%E9%85%8D%E5%AF%B9%E5%9C%A8%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">双线性配对在零知识证明中的应用</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -204,7 +204,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://whisker17.github.io/2020/08/10/next-bug-fix/">
+    <link itemprop="mainEntityOfPage" href="https://whisker17.github.io/2020/09/15/bilinear-pairings-summarize/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -219,7 +219,7 @@
     
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Blog 搭建错误总结
+          双线性配对在零知识证明中的作用
         </h1>
 
         <div class="post-meta">
@@ -228,23 +228,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-08-10 21:16:00" itemprop="dateCreated datePublished" datetime="2020-08-10T21:16:00+08:00">2020-08-10</time>
+              <time title="创建时间：2020-09-15 16:07:33 / 修改时间：18:38:00" itemprop="dateCreated datePublished" datetime="2020-09-15T16:07:33+08:00">2020-09-15</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-09 23:30:48" itemprop="dateModified" datetime="2020-09-09T23:30:48+08:00">2020-09-09</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/blog/" itemprop="url" rel="index"><span itemprop="name">blog</span></a>
+                  <a href="/categories/blockchain-ZKP/" itemprop="url" rel="index"><span itemprop="name">blockchain | ZKP</span></a>
                 </span>
             </span>
 
@@ -257,21 +251,28 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>在本篇 Blog 中将会对在部署过程中发现的问题进行总结</p>
-<h2 id="访客计数出错"><a href="#访客计数出错" class="headerlink" title="访客计数出错"></a>访客计数出错</h2><ul>
-<li><strong>错误场景：</strong></li>
-</ul>
-<p>在使用 LeanCloud 时，发现填入 AppId 以及 AppKey 之后阅读数量出错，错误代码为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Counter not initialized! More info at console err msg.</span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>解决方案：</strong></li>
-</ul>
-<ol>
-<li>将 <code>security</code> 字段改为 <code>false</code></li>
-<li><p>安装了插件<code>hexo-leancloud-counter-security</code>（命令行执行<code>npm install hexo-leancloud-counter-security</code>）</p>
-<a id="more"></a></li>
-</ol>
-
+        <p>我们都知道，在 ZK-SNARKs 中我们整合了许多工具，从而一步步达到了我们想要的目的，即零知识和证明。而双线性配对是其中非常重要的一环。为什么这么说呢，下面我们就来介绍一下双线性配对在零知识证明中的意义。</p>
+  <a id="more"></a>
+<h2 id="配对的基本概念"><a href="#配对的基本概念" class="headerlink" title="配对的基本概念"></a>配对的基本概念</h2><p>配对（Pairing）将输入的两个群成员映射为第三个群的成员，将配对记为<code>e</code>。</p>
+<p>​        e：<script type="math/tex">G_2 \times G_1  -> G_T</script></p>
+<p>上式左边的群由椭圆曲线上的点构成。</p>
+<p>配对必须具备一些代数特征，比如最重要的<strong>双线性</strong>：</p>
+<script type="math/tex; mode=display">
+e(A,B+C)=e(A,B)\  \cdot \ e(A,C) \\
+e(A+B,C)=e(A,C)\  \cdot \ e(B,C) \\
+e(nA,B)=e(A,nB)=e(A,B)^n</script><p>而配对的另一个非常重要的特征就是<strong>非退化性</strong>：</p>
+<script type="math/tex; mode=display">
+e(G,G) \neq 1</script><p>右边的 1 表示目标群 <script type="math/tex">G_T</script> 中的乘法单位元。非退化性保证了只要我们选择椭圆曲线上的非单位成员 G ，就能得到目标群中的非单位元。</p>
+<h2 id="双线性配对在零知识证明中的应用"><a href="#双线性配对在零知识证明中的应用" class="headerlink" title="双线性配对在零知识证明中的应用"></a>双线性配对在零知识证明中的应用</h2><p>开门见山，最重要的一句话：</p>
+<p><strong>配对可以用于验证一个数学过程是否正确执行，配对可以揭示秘密值是通过加法以及最多一次乘法来关联起来的</strong></p>
+<p>同样，这也是配对在 ZK-SNARKs 中的用途。假设，存在这样一个二次方程：</p>
+<script type="math/tex; mode=display">
+x^2-2027x+16152=0</script><p>为了说服你我的确知道上述方程的一个解，一个办法就是告诉你我所知道的这个解，然后你自己带入上述方程去验证。另一个办法就是我不告诉你这个具体的解是多少，但是使用椭圆曲线上的配进行验证。</p>
+<p>首先注意，如果：</p>
+<script type="math/tex; mode=display">
+e(G,G)^k = 1</script><p>那么 k 要么是0，要么是群的阶的倍数，因此如果以下等式成立，我们就可以确定二次方程成立：</p>
+<script type="math/tex; mode=display">
+e(G,G)^{x^2-2027x+16152}=1</script>
     </div>
 
     
@@ -286,13 +287,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/10/beautify-next/" rel="prev" title="对基于Next的Blog进行美化">
-      <i class="fa fa-chevron-left"></i> 对基于Next的Blog进行美化
+    <a href="/2020/09/13/zash-summarize/" rel="prev" title="zcash 零知识证明详解综述">
+      <i class="fa fa-chevron-left"></i> zcash 零知识证明详解综述
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/08/12/pre/" rel="next" title="代理重加密综述">
-      代理重加密综述 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     

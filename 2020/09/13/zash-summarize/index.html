@@ -22,16 +22,16 @@
     var CONFIG = {"hostname":"whisker17.github.io","root":"/","scheme":"Muse","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false};
   </script>
 
-  <meta name="description" content="原文：Zk-SNARKs: Under the Hood">
+  <meta name="description" content="原文：Explaining SNARKs">
 <meta property="og:type" content="article">
 <meta property="og:title" content="zcash 零知识证明详解综述">
 <meta property="og:url" content="https://whisker17.github.io/2020/09/13/zash-summarize/index.html">
 <meta property="og:site_name" content="Ideal Area">
-<meta property="og:description" content="原文：Zk-SNARKs: Under the Hood">
+<meta property="og:description" content="原文：Explaining SNARKs">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://whisker17.github.io/.io//9787609-41e2c7cb6121eea8.webp">
 <meta property="article:published_time" content="2020-09-13T12:15:33.000Z">
-<meta property="article:modified_time" content="2020-09-14T14:29:23.727Z">
+<meta property="article:modified_time" content="2020-09-15T08:03:51.612Z">
 <meta property="article:author" content="Whisker17">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://whisker17.github.io/.io//9787609-41e2c7cb6121eea8.webp">
@@ -164,7 +164,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -238,7 +238,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-14 22:29:23" itemprop="dateModified" datetime="2020-09-14T22:29:23+08:00">2020-09-14</time>
+                <time title="修改时间：2020-09-15 16:03:51" itemprop="dateModified" datetime="2020-09-15T16:03:51+08:00">2020-09-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -259,7 +259,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>原文：<a target="_blank" rel="noopener" href="https://medium.com/@VitalikButerin/zk-snarks-under-the-hood-b33151a013f6">Zk-SNARKs: Under the Hood</a></p>
+        <p>原文：<a target="_blank" rel="noopener" href="https://electriccoin.co/blog/snark-explain7/">Explaining SNARKs</a></p>
   <a id="more"></a>
 <p>最近读了 Zcash 的零知识证明科普系列的文章，就在这里做一个总结，记录一下学习过程。</p>
 <h2 id="同态隐藏"><a href="#同态隐藏" class="headerlink" title="同态隐藏"></a>同态隐藏</h2><p>同态隐藏的定义：<code>E(x)</code>是<code>x</code>的函数，该函数满足：</p>
@@ -373,10 +373,37 @@
 <script type="math/tex; mode=display">F = L + X^{d+1} * R + X ^ {2(d+1)} * O</script><p>将R与<script type="math/tex">X^{d+1}</script>相乘、O与<script type="math/tex">x^{2(d+1)}</script>相乘的原因是，这样L, R, O的系数在F中不会混合：<script type="math/tex">1, X, ..., X^d</script>刚好是L的系数，后面d+1个系数<script type="math/tex">x^{d+1}, ..., X^{2d+1}</script>刚好是R的系数，最后d+1个系数是O的。</p>
 <p>让我们用同样的方式把QAP中的多项式组合起来，给每个<script type="math/tex">i \in {1, ..., m}</script>定义一个多项式<script type="math/tex">F_i</script>，它的第一部分d+1个系数是<script type="math/tex">L_i</script>的系数，之后的是<script type="math/tex">R_i</script>的系数，再之后是<script type="math/tex">Q_i</script>的系数。也就是说，对于每个<script type="math/tex">i \in {1, ..., m}</script>，我们定义这个多项式：</p>
 <script type="math/tex; mode=display">F_i = L_i + X^{d+1} * R_i + X^{2(d+1)} * O_i</script><p>注意，当我们把两个<script type="math/tex">F_i相加时，L_i, R_i, O_i</script>也分别相加。例如：</p>
-<p><script type="math/tex">F_1 + F_2 = (L_1 + L_2) + X^{d+1} * (R_1 + R_2) + X ^{2(d+1)} * (O_1 + O_2)</script>。</p>
-<p>更一般地，假设对于<script type="math/tex">(c_1, ..., c_m)我们有F = \sum_{i=1} ^m c_i * F_i</script>，那么我们将得到： <script type="math/tex">L = \sum_{i=1}^m c_i * L_i, R = \sum_{i=1}^m c_i * R_i, O = \sum_{i=1}^m c_i * O_i</script>，它们共用相同的(<script type="math/tex">c_1, ..., c_m</script>)。换句话说，如果F是<script type="math/tex">F_i</script>的线性组合，那么L, R, O就确实是从同一组赋值得到的。</p>
-<p>因此，Bob将会请Alice证明F是<script type="math/tex">F_i</script>的线性组合，这个过程和盲计算是类似的：</p>
-<p>Bob选择一个随机的<script type="math/tex">\beta \in \mathbb{F}_p^*</script>，并把隐藏数<script type="math/tex">E(\beta * F_i(s)), ..., E(\beta * F_m(s))</script>发送给Alice，并请Alice发回<script type="math/tex">E(\beta*F(s))</script>。如果她成功了，根据扩展版本的KCA假设，就代表Alice知道如何对<script type="math/tex">F_i</script>进行线性组合，从而计算出F。</p>
+<script type="math/tex; mode=display">F_1 + F_2 = (L_1 + L_2) + X^{d+1} * (R_1 + R_2) + X ^{2(d+1)} * (O_1 + O_2)$$。
+
+更一般地，假设对于$$(c_1, ..., c_m)我们有F = \sum_{i=1} ^m c_i * F_i $$，那么我们将得到： $$L = \sum_{i=1}^m c_i * L_i, R = \sum_{i=1}^m c_i * R_i, O = \sum_{i=1}^m c_i * O_i$$，它们共用相同的($$c_1, ..., c_m$$)。换句话说，如果F是$$F_i$$的线性组合，那么L, R, O就确实是从同一组赋值得到的。
+
+因此，Bob将会请Alice证明F是$$F_i$$的线性组合，这个过程和盲计算是类似的：
+
+Bob选择一个随机的$$\beta \in \mathbb{F}_p^*$$，并把隐藏数$$E(\beta * F_i(s)), ..., E(\beta * F_m(s))$$发送给Alice，并请Alice发回$$E(\beta*F(s))$$。如果她成功了，根据扩展版本的KCA假设，就代表Alice知道如何对$$F_i$$进行线性组合，从而计算出F。
+
+## 添加零知识以隐藏赋值
+
+在zk-SNARK里，Alice想隐藏她的赋值的所有信息，但是这些隐藏数$$E(L(s)), E(R(s)), E(O(s)), E(H(s))$$多少还是提供了一些信息。
+
+比如，给定一些其他的符合条件的赋值($$c_1, ..., c_m$$)，Bob可以分别计算出对应的L', R', O', H'，以及它们的隐藏数$$E(L'(s)), E(R'(s)), E(O'(s)), E(H'(s))$$。如果这些结果与Alice的隐藏数不同，那么他可以断定($$c'_1, ..., c'_m$$)不是Alice的赋值。
+
+为了避免这种的信息泄漏，Alice想**给每个多项式添加一些随机数作为偏移量T**，用以隐藏他的赋值。这样，她选择了随机的$$\sigma_1, \sigma_2, \sigma_3 \in F_p^*$$，并定义：
+
+$$L_z:= L + \sigma_1 * T, R_z := R + \sigma_2 * T, O_z := O + \sigma_3 * T$$。
+
+假设 L, R, O是通过一组正确的赋值得到了，因此对于某个多项式H, 可以使得L * R - O = T * H。因为我们刚刚在每个地方都加了个T的倍数，因此T也能整除$$L_z * R_z - O_z$$。看看我们下面的计算：
+
+$$L_z * R_z - O_z = (L + \sigma_1 * T)(R + \sigma_2 * T) - O - \sigma_3*T
+ =(L*R - O) + L*\sigma_2*T + \sigma_1 * T * R + \sigma_1 \sigma_2*T^2 - \sigma_3*T
+ =T*(H + L* \sigma_2 + \sigma_1 * R + \sigma_1 \sigma_2*T - \sigma_3)</script><p>如此，我们定义<script type="math/tex">H_z = H + L* \sigma_2 + \sigma_1 * R + \sigma_1 \sigma_2*T - \sigma_3</script>，我们就得到了： <script type="math/tex">L_z * R_z - O_z = T * H_z</script>。因此，如果Alice没使用L, R, O, H，而使用了<script type="math/tex">L_z, R_z, O_z, H_z</script>，那么Bob仍能接受。</p>
+<p>换句话说，这些多项式在点<script type="math/tex">s \in \mathbb{F}_p, T(s) \neq 0</script>的计算，没有揭示出任何原有赋值的信息。例如，因为<script type="math/tex">T(s) \neq 0</script>并且<script type="math/tex">\sigma_1</script>是随机的，所以<script type="math/tex">\sigma_1 * T(s)</script>也是一个随机的值，因此，<script type="math/tex">L_z(s) = L(s) + \sigma_1 * T(s)</script>没有揭示出L(s)的任何信息，因为它被随机数给掩盖了。</p>
+<p>看起来现在把基本功能都实现了，并且也保证了一定的零知识性，但是我们不难发现，仍然有两个问题困扰着我们：</p>
+<ol>
+<li><p>在这个协议中，Bob需要一个<strong>支持乘法</strong>的同态加密函数(HH)。比如，他需要根据<script type="math/tex">E(H(s))和E(T(s))</script>计算出<script type="math/tex">E(H(s) * T(s))</script>。然而，目前为止，我们还没有看到过这种HH的例子，我们只见过可以支持加法和线性组合的HH。</p>
+</li>
+<li><p>上述的章节中，我们讨论了Alice和Bob间的交互式协议。不过，我们的最终目标是，能够让Alice发送一个单一的不需要交互的证明信息，并且可以被公开的验证——即，任何人都可以看见这个证明信息，都可以验证她的合法性，而不仅仅是Bob(之前和Alice交流过的那个人)可以验证。</p>
+</li>
+</ol>
 
     </div>
 
@@ -395,7 +422,10 @@
     <a href="/2020/09/10/Zk-SNARKs-Under-the-Hood/" rel="prev" title="Zk-SNARKs: Under the Hood">
       <i class="fa fa-chevron-left"></i> Zk-SNARKs: Under the Hood
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/15/bilinear-pairings-summarize/" rel="next" title="双线性配对在零知识证明中的作用">
+      双线性配对在零知识证明中的作用 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
