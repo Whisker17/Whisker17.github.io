@@ -6,7 +6,7 @@
   <link href="https://whisker17.github.io/atom.xml" rel="self"/>
   
   <link href="https://whisker17.github.io/"/>
-  <updated>2020-09-16T05:19:24.729Z</updated>
+  <updated>2020-09-16T05:41:12.253Z</updated>
   <id>https://whisker17.github.io/</id>
   
   <author>
@@ -15,6 +15,19 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>fuck zksnark step by step</title>
+    <link href="https://whisker17.github.io/2020/09/16/fuck-zksnark-step-by-step/"/>
+    <id>https://whisker17.github.io/2020/09/16/fuck-zksnark-step-by-step/</id>
+    <published>2020-09-16T05:41:12.000Z</published>
+    <updated>2020-09-16T05:41:12.253Z</updated>
+    
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>双线性配对在零知识证明中的作用</title>
