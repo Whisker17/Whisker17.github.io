@@ -6,7 +6,7 @@
   <link href="https://whisker17.github.io/atom.xml" rel="self"/>
   
   <link href="https://whisker17.github.io/"/>
-  <updated>2020-09-16T05:41:12.253Z</updated>
+  <updated>2020-09-17T09:28:50.476Z</updated>
   <id>https://whisker17.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>群、域、环简介</title>
+    <link href="https://whisker17.github.io/2020/09/17/group-ring-field/"/>
+    <id>https://whisker17.github.io/2020/09/17/group-ring-field/</id>
+    <published>2020-09-17T04:34:26.000Z</published>
+    <updated>2020-09-17T09:28:50.476Z</updated>
+    
+    <content type="html"><![CDATA[<p>群、域、环这三者是我们在学习密码学知识中不可避免要遇到的名词，那么它们到底指代的是什么样的结构呢？这篇文章就来给大家进行一个简单的科普</p><a id="more"></a><h2 id="群"><a href="#群" class="headerlink" title="群"></a>群</h2>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;群、域、环这三者是我们在学习密码学知识中不可避免要遇到的名词，那么它们到底指代的是什么样的结构呢？这篇文章就来给大家进行一个简单的科普&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="math | cryptography" scheme="https://whisker17.github.io/categories/math-cryptography/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>fuck zksnark step by step</title>
