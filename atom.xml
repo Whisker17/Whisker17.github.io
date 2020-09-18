@@ -6,7 +6,7 @@
   <link href="https://whisker17.github.io/atom.xml" rel="self"/>
   
   <link href="https://whisker17.github.io/"/>
-  <updated>2020-09-17T15:15:05.025Z</updated>
+  <updated>2020-09-18T14:49:01.459Z</updated>
   <id>https://whisker17.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://whisker17.github.io/2020/09/17/group-ring-field/"/>
     <id>https://whisker17.github.io/2020/09/17/group-ring-field/</id>
     <published>2020-09-17T04:34:26.000Z</published>
-    <updated>2020-09-17T15:15:05.025Z</updated>
+    <updated>2020-09-18T14:49:01.459Z</updated>
     
     <content type="html"><![CDATA[<p>群、域、环这三者是我们在学习密码学知识中不可避免要遇到的名词，那么它们到底指代的是什么样的结构呢？这篇文章就来给大家进行一个简单的科普</p><a id="more"></a><h2 id="前提知识"><a href="#前提知识" class="headerlink" title="前提知识"></a>前提知识</h2><ul><li><p><strong>幺元</strong></p><p>若对于一个二元运算 + （ + 并不是指一般意义的加法，它可以指代任何二元运算），在有若干个数的集合中，存在一个元素，对于其他任何元素，通过这个二元运算之后，结果都是其他任何元素本身，则称这个元素是这个集合对于该二元运算 + 的幺元，记为 e。以加法为例，0就是在整数集合中加法的幺元。</p></li><li><p><strong>零元</strong></p><p>若对于一个二元运算 + （ + 并不是指一般意义的加法，它可以指代任何二元运算），在有若干个数的集合中，存在一个元素，对于其他任何元素，通过这个二元运算之后，结果都是这个元素本身，则称这个数是这个集合对于该二元运算 + 的零元，记为 θ 。以乘法为例， 0 就是在整数集合中加法的零元。</p></li><li><p><strong>逆元</strong></p><p>若对于一个二元运算 + （+并不是指一般意义的加法，它可以指代任何二元运算），存在一个元素 a ，满足 <script type="math/tex">a+a^{-1}=e</script> （ e 为该运算的幺元），则 a 与 <script type="math/tex">a^{-1}</script> 互为逆元。以加法为例，整数这个集合中，一个数和它的相反数互为逆元。</p></li></ul><h2 id="群"><a href="#群" class="headerlink" title="群"></a>群</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>满足以下公理的集合 G 称为群：（注： × 为广义运算）</p><ol><li>在运算 × 下是封闭的，即对于所有 G 中的 a，b，运算 a×b 的结果也存在于 G 中；</li><li>存在幺元（单位元），且唯一，即 a×e = e×a = a ；</li><li>对于 G 中的任意的元，都有与其对应的逆元，且唯一，即 a×b = b×a = e ；</li><li>对于 G 中的任意的元，都满足结合律。</li></ol><h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><ol><li>当一个群 G 中只含有有限元素，那么这些元素的个数记为群 G 的阶，记作 #G。</li><li>一个群 G 中的任何子群在相同的运算下如果也是群，则称之为群 G 的一个子群。</li><li>如果存在一个最小正整数 k ，满足 <script type="math/tex">g^k=e</script> ，则称 k 为群 G 中元素 g 的阶。</li><li>有限群（即有着有限多个元素的群）中任意元素 β 的阶可整除该群的阶。</li><li>相较于无限群，有限群因为其易在计算机中实现，故其在密码学中的作用更大。</li></ol><h3 id="特殊的群"><a href="#特殊的群" class="headerlink" title="特殊的群"></a>特殊的群</h3><ul><li><p><strong>阿贝尔群</strong></p><p>在群中群运算的次序很重要，把元素 <em>a</em> 与元素 <em>b</em> 结合，所得到的结果不一定与把元素 <em>b</em> 与元素 <em>a</em> 结合相同；亦即，<script type="math/tex">a×b = b×a</script>（交换律）不一定恒成立。而满足交换律的群就被称为交换群，即<strong>阿贝尔群</strong></p></li><li><p><strong>半群</strong></p><p>在运算 × 下是封闭的；对于G中的任意的元，都满足结合律。但是并不满足其他群的定义。</p></li></ul><h2 id="环"><a href="#环" class="headerlink" title="环"></a>环</h2><h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><p>满足以下公理的集合 R 称为环：</p><ul><li><p>对于加法的代数系统+：（环在加法下是一个<strong>阿贝尔群</strong>）</p><ol><li>在运算 + 下是封闭的；</li><li>存在幺元（单位元），且唯一；</li><li>对于 R 中的任意的元，都有与其对应的逆元，且唯一；</li><li>对于 R 中的任意的元，都满足结合律；</li><li>对于 R 中的任意的元，都满足交换律。</li></ol></li><li><p>对于乘法的代数系统 × ：（环在乘法下是一个<strong>半群</strong>）</p><ol><li>在运算 × 下是封闭的；</li><li>对于 R 中的任意的元，都满足结合律；</li></ol></li></ul><p>  关于运算 + 和 × ：<br>  对于 R 中的任意的元，都满足分配律。</p><h3 id="性质-1"><a href="#性质-1" class="headerlink" title="性质"></a>性质</h3><ol><li>若环中的乘法运算满足交换律，即 a×b = b×a ，这样的环称为交换环。</li><li>若环中的乘法运算拥有幺元，这样的环称之为含幺环。</li></ol><p><strong>简而言之，环是细化的群。</strong></p><h2 id="域"><a href="#域" class="headerlink" title="域"></a>域</h2><h3 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h3><p>满足以下公理的集合 F 称为域：</p><ul><li><p>对于加法的代数系统 + ：（域在加法下是一个<strong>阿贝尔群</strong>）</p><ol><li>在运算 + 下是封闭的；</li><li>存在幺元（单位元），且唯一；</li><li>对于 F 中的任意的元，都有与其对应的逆元，且唯一；</li><li>对于 F 中的任意的元，都满足结合律；</li><li>对于 F 中的任意的元，都满足交换律。</li></ol></li><li><p>对于乘法的代数系统 × ：（域（0元素除外）在乘法下是一个<strong>阿贝尔群</strong>）</p><ol><li>在运算 + 下是封闭的；</li><li>存在幺元（单位元），且唯一；</li><li>对于 F 中的任意的元（除0元素），都有与其对应的逆元，且唯一；</li><li>对于 F 中的任意的元，都满足结合律；</li><li>对于 F 中的任意的元，都满足交换律。</li></ol></li></ul><p>  关于运算 + 和 × ：<br>  对于 F 中的任意的元，都满足分配律。</p><p>  域是环的一种。域和一般的环的区别在于域要求它的元素（除<strong>零元</strong>之外）可以进行除法运算，这等于说每个非零的元素都要有乘法逆元。</p><h3 id="性质-2"><a href="#性质-2" class="headerlink" title="性质"></a>性质</h3><ol><li>域的一个子集如果在继承的加法和乘法运算下本身也是一个域，就称为子域。例如，实数域便是复数域的一个子域。</li><li>含有有限个元素的域称为有限域 Fq 或伽罗华域 GF(q) ，其中 q 为该有限域的元素个数。</li><li>含有 2m 个元素的有限域称为二进制域。</li><li>含有 p （ p 为奇素数）个元素的有限域称为二进制域。</li><li>含有 pm （ p 为素数）个元素的有限域称为特征值为 p 的域。在特征值为 p 的有限域中，表达式恒成立。</li></ol><h3 id="有限域"><a href="#有限域" class="headerlink" title="有限域"></a>有限域</h3><h4 id="定理"><a href="#定理" class="headerlink" title="定理"></a>定理</h4><ul><li>有限域的阶（有限域中元素的个数）是一个素数的幂。</li><li>对于每个素数 <em>p</em> 和每个正整数 <em>n</em> 在同构的意义下存在惟一的  <script type="math/tex">p^n</script> 阶的有限域，并且所有元素都是方程  <script type="math/tex">x^{p^n}-x=0</script> 的根，该域的<a href="https://zh.wikipedia.org/wiki/特征_(代数">特征</a>)为<em>p</em>。</li><li>有限域的乘法群是<a href="https://zh.wikipedia.org/wiki/循环群">循环群</a>。即若 <em>F</em> 是有限域，则存在 <script type="math/tex">\alpha \in F</script> 使得 <script type="math/tex">F^*=\{x \in F|x \neq 0\}=<\alpha></script></li><li>有限域是<a href="https://zh.wikipedia.org/w/index.php?title=完美域&amp;action=edit&amp;redlink=1">完美域</a>，即它的任何<a href="https://zh.wikipedia.org/wiki/代數擴張">代数扩张</a>一定是<a href="https://zh.wikipedia.org/wiki/可分扩张">可分扩张</a></li><li>有限域的<a href="https://zh.wikipedia.org/wiki/有限擴張">有限扩张</a>一定是<a href="https://zh.wikipedia.org/wiki/伽罗瓦扩张">伽罗瓦扩张</a>，并且对应的<a href="https://zh.wikipedia.org/wiki/伽罗瓦群">伽罗瓦群</a>是<a href="https://zh.wikipedia.org/wiki/循环群">循环群</a>。</li></ul>]]></content>
     
@@ -36,14 +36,23 @@
   </entry>
   
   <entry>
-    <title>fuck zksnark step by step</title>
+    <title>一步步解析 zk-snark</title>
     <link href="https://whisker17.github.io/2020/09/16/fuck-zksnark-step-by-step/"/>
     <id>https://whisker17.github.io/2020/09/16/fuck-zksnark-step-by-step/</id>
     <published>2020-09-16T05:41:12.000Z</published>
-    <updated>2020-09-16T05:41:12.253Z</updated>
+    <updated>2020-09-18T14:49:16.151Z</updated>
+    
+    <content type="html"><![CDATA[<p>zk-SNARK ，即 “zero knowledge Succinct Non-interactive Argument of Knowledge” 的缩写。显而易见，这样的名字就像这门技术一样，是将一系列东西杂揉在一起。</p><p>当人们说到零知识证明时，要说这门技术做了什么，大家似乎都能说个七七八八出来，总结起来也就一句话：</p><p><strong>以不透露一个论断（<code>statement</code>）的任何信息为前提，向你证明这个论断是对的</strong>。</p><p>但是知其然而不知其所以然，其中的原理是什么，大家似乎没办法解释出来，本文的宗旨即为了从其根本入手，一步步解析零知识证明这项技术的神秘之处。</p>  <a id="more"></a><h2 id="zk-SNARK"><a href="#zk-SNARK" class="headerlink" title="zk-SNARK"></a>zk-SNARK</h2><p>zk-SNARK ，即 “zero knowledge Succinct Non-interactive Argument of Knowledge” 的缩写。显而易见，这样的名字就像这门技术一样，是将一系列东西杂揉在一起。</p><ul><li><p><strong>zero knowledge：</strong>零知识，即在证明的过程中不透露任何内情</p></li><li><p><strong>succinct：</strong>简洁的，主要是指验证过程不涉及大量数据传输以及验证算法简单</p></li><li><p><strong>non-interactive：</strong>无交互。此技术试图彻底避免 Prover 和 Verifier 之间需要经过多次交互才能取得满意的可靠性这一约束。</p></li><li><p><strong>Arguments：</strong>证明过程是计算完好（computationally soundness）的，Prover 无法在合理的时间内造出伪证（破解）。跟计算完好对应的是理论完好（perfect soundness)，密码学里面一般都是要求计算完好。</p></li><li><p><strong>of knowledge：</strong>对于一个 Prover 来说，在不知晓特定证明 (witness) 的前提下，构建一个有效的零知识证据是不可能的。</p></li></ul><p>就像我们一步步剥离了 zk-SNARK 这个名字一样，现在我们来一步步揭开这项神秘且令人向往的技术。</p><h3 id="NP-与-P-问题"><a href="#NP-与-P-问题" class="headerlink" title="NP 与 P 问题"></a>NP 与 P 问题</h3>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;zk-SNARK ，即 “zero knowledge Succinct Non-interactive Argument of Knowledge” 的缩写。显而易见，这样的名字就像这门技术一样，是将一系列东西杂揉在一起。&lt;/p&gt;
+&lt;p&gt;当人们说到零知识证明时，要说这门技术做了什么，大家似乎都能说个七七八八出来，总结起来也就一句话：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;以不透露一个论断（&lt;code&gt;statement&lt;/code&gt;）的任何信息为前提，向你证明这个论断是对的&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;但是知其然而不知其所以然，其中的原理是什么，大家似乎没办法解释出来，本文的宗旨即为了从其根本入手，一步步解析零知识证明这项技术的神秘之处。&lt;/p&gt;</summary>
     
     
     
+    <category term="blockchain | ZKP" scheme="https://whisker17.github.io/categories/blockchain-ZKP/"/>
     
     
   </entry>

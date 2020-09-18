@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"whisker17.github.io","root":"/","scheme":"Muse","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false};
   </script>
 
-  <meta name="description" content="Blockchain | Cryptography">
+  <meta name="description" content="zk-SNARK ，即 “zero knowledge Succinct Non-interactive Argument of Knowledge” 的缩写。显而易见，这样的名字就像这门技术一样，是将一系列东西杂揉在一起。 当人们说到零知识证明时，要说这门技术做了什么，大家似乎都能说个七七八八出来，总结起来也就一句话： 以不透露一个论断（statement）的任何信息为前提，向你证明这个论断是对">
 <meta property="og:type" content="article">
-<meta property="og:title" content="fuck zksnark step by step">
+<meta property="og:title" content="一步步解析 zk-snark">
 <meta property="og:url" content="https://whisker17.github.io/2020/09/16/fuck-zksnark-step-by-step/index.html">
 <meta property="og:site_name" content="Ideal Area">
-<meta property="og:description" content="Blockchain | Cryptography">
+<meta property="og:description" content="zk-SNARK ，即 “zero knowledge Succinct Non-interactive Argument of Knowledge” 的缩写。显而易见，这样的名字就像这门技术一样，是将一系列东西杂揉在一起。 当人们说到零知识证明时，要说这门技术做了什么，大家似乎都能说个七七八八出来，总结起来也就一句话： 以不透露一个论断（statement）的任何信息为前提，向你证明这个论断是对">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-16T05:41:12.000Z">
-<meta property="article:modified_time" content="2020-09-16T05:41:12.253Z">
+<meta property="article:modified_time" content="2020-09-18T14:49:16.151Z">
 <meta property="article:author" content="Whisker17">
 <meta name="twitter:card" content="summary">
 
@@ -47,7 +47,7 @@
   };
 </script>
 
-  <title>fuck zksnark step by step | Ideal Area</title>
+  <title>一步步解析 zk-snark | Ideal Area</title>
   
 
 
@@ -137,7 +137,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -149,6 +149,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#zk-SNARK"><span class="nav-number">1.</span> <span class="nav-text">zk-SNARK</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NP-%E4%B8%8E-P-%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">NP 与 P 问题</span></a></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -218,7 +219,7 @@
     
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          fuck zksnark step by step
+          一步步解析 zk-snark
         </h1>
 
         <div class="post-meta">
@@ -230,6 +231,22 @@
 
               <time title="创建时间：2020-09-16 13:41:12" itemprop="dateCreated datePublished" datetime="2020-09-16T13:41:12+08:00">2020-09-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-18 22:49:16" itemprop="dateModified" datetime="2020-09-18T22:49:16+08:00">2020-09-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/blockchain-ZKP/" itemprop="url" rel="index"><span itemprop="name">blockchain | ZKP</span></a>
+                </span>
+            </span>
 
           
 
@@ -240,7 +257,26 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        
+        <p>zk-SNARK ，即 “zero knowledge Succinct Non-interactive Argument of Knowledge” 的缩写。显而易见，这样的名字就像这门技术一样，是将一系列东西杂揉在一起。</p>
+<p>当人们说到零知识证明时，要说这门技术做了什么，大家似乎都能说个七七八八出来，总结起来也就一句话：</p>
+<p><strong>以不透露一个论断（<code>statement</code>）的任何信息为前提，向你证明这个论断是对的</strong>。</p>
+<p>但是知其然而不知其所以然，其中的原理是什么，大家似乎没办法解释出来，本文的宗旨即为了从其根本入手，一步步解析零知识证明这项技术的神秘之处。</p>
+  <a id="more"></a>
+<h2 id="zk-SNARK"><a href="#zk-SNARK" class="headerlink" title="zk-SNARK"></a>zk-SNARK</h2><p>zk-SNARK ，即 “zero knowledge Succinct Non-interactive Argument of Knowledge” 的缩写。显而易见，这样的名字就像这门技术一样，是将一系列东西杂揉在一起。</p>
+<ul>
+<li><p><strong>zero knowledge：</strong>零知识，即在证明的过程中不透露任何内情</p>
+</li>
+<li><p><strong>succinct：</strong>简洁的，主要是指验证过程不涉及大量数据传输以及验证算法简单</p>
+</li>
+<li><p><strong>non-interactive：</strong>无交互。此技术试图彻底避免 Prover 和 Verifier 之间需要经过多次交互才能取得满意的可靠性这一约束。</p>
+</li>
+<li><p><strong>Arguments：</strong>证明过程是计算完好（computationally soundness）的，Prover 无法在合理的时间内造出伪证（破解）。跟计算完好对应的是理论完好（perfect soundness)，密码学里面一般都是要求计算完好。</p>
+</li>
+<li><p><strong>of knowledge：</strong>对于一个 Prover 来说，在不知晓特定证明 (witness) 的前提下，构建一个有效的零知识证据是不可能的。</p>
+</li>
+</ul>
+<p>就像我们一步步剥离了 zk-SNARK 这个名字一样，现在我们来一步步揭开这项神秘且令人向往的技术。</p>
+<h3 id="NP-与-P-问题"><a href="#NP-与-P-问题" class="headerlink" title="NP 与 P 问题"></a>NP 与 P 问题</h3>
     </div>
 
     
