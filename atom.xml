@@ -6,7 +6,7 @@
   <link href="https://whisker17.github.io/atom.xml" rel="self"/>
   
   <link href="https://whisker17.github.io/"/>
-  <updated>2020-09-18T14:49:01.459Z</updated>
+  <updated>2020-09-22T06:23:31.764Z</updated>
   <id>https://whisker17.github.io/</id>
   
   <author>
@@ -15,6 +15,19 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>np vs p</title>
+    <link href="https://whisker17.github.io/2020/09/22/np-vs-p/"/>
+    <id>https://whisker17.github.io/2020/09/22/np-vs-p/</id>
+    <published>2020-09-22T06:23:31.000Z</published>
+    <updated>2020-09-22T06:23:31.764Z</updated>
+    
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>群、域、环简介</title>
