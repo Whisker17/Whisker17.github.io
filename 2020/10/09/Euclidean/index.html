@@ -30,7 +30,7 @@
 <meta property="og:description" content="欧几里得算法又称辗转相除法，指的是：对于任意的非负整数 𝑎 和正整数 𝑏 ，求这两个数的最大公因数 ，记为 gcd(a,b) ，其中 gcd 是 greatest common division 的首字母组合。 辗转相除法基于如下原理：两个整数的最大公约数等于其中较小的数和两数相除余数的最大公约数，即 gcd(a,b) &#x3D; gcd(b,a\ mod\ b)  证明过程对于任何可以整除 a 和">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-10-09T06:58:38.000Z">
-<meta property="article:modified_time" content="2020-10-10T06:24:36.133Z">
+<meta property="article:modified_time" content="2020-10-10T06:52:28.985Z">
 <meta property="article:author" content="Whisker17">
 <meta name="twitter:card" content="summary">
 
@@ -149,7 +149,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">欧几里得算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%81%E6%98%8E%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">证明过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%8F%8A%E5%85%B6%E5%B7%A5%E7%A8%8B%E4%BC%98%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">实现及其工程优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">扩展欧几里得算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.1.</span> <span class="nav-text">实现</span></a></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">欧几里得算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%81%E6%98%8E%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">证明过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%8F%8A%E5%85%B6%E5%B7%A5%E7%A8%8B%E4%BC%98%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">实现及其工程优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">扩展欧几里得算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.2.</span> <span class="nav-text">实现</span></a></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -236,7 +236,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-10 14:24:36" itemprop="dateModified" datetime="2020-10-10T14:24:36+08:00">2020-10-10</time>
+                <time title="修改时间：2020-10-10 14:52:28" itemprop="dateModified" datetime="2020-10-10T14:52:28+08:00">2020-10-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,6 +268,22 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span>(<span class="params">num1,num2</span>):</span></span><br><span class="line">    <span class="keyword">if</span> num1 &lt; num2:</span><br><span class="line">        <span class="keyword">return</span> gcd(num2,num1)</span><br><span class="line">    <span class="keyword">if</span> num1 == num2:</span><br><span class="line">        <span class="keyword">return</span> num2</span><br><span class="line">    <span class="keyword">if</span> (num1 % num2 == <span class="number">0</span>) <span class="keyword">and</span> (num2 % <span class="number">2</span> == <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> gcd(num1 &gt;&gt; <span class="number">1</span>, num2 &gt;&gt; <span class="number">1</span>) &lt;&lt; <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> (num1 % <span class="number">2</span> == <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> gcd(num1 &gt;&gt; <span class="number">1</span>, num2)</span><br><span class="line">    <span class="keyword">elif</span> (num2 % <span class="number">2</span> == <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> gcd(num1, num2 &gt;&gt; <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> gcd(num2, num1-num2)</span><br></pre></td></tr></table></figure>
 <h2 id="扩展欧几里得算法"><a href="#扩展欧几里得算法" class="headerlink" title="扩展欧几里得算法"></a>扩展欧几里得算法</h2><p>是欧几里得算法的扩展。已知整数 a，b，扩展欧几里得算法可以在求得 a、b 的最大公约数的同时，能找到一组整数解 x、y（其中一个很可能是负数），使他们满足 <script type="math/tex">ax+by=gcd(a,b)</script> 。</p>
 <p>我们知道，在欧几里得算法中我们仅仅利用了每步带余除法所得的余数，而扩展欧几里得算法中还利用了带余除法所得的商。扩展欧几里得算法可以用来计算模反元素（也叫模逆元），计算模反元素是 RSA  加密算法中获得所需公钥、私钥的必要步骤。</p>
+<h3 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h3><p>在欧几里得算法中，我们记欲求最大公约数的两个数为 a、b，第 i 次的带余除法所得的商为 <script type="math/tex">q_i</script> ，余数为 <script type="math/tex">r_{i+1}</script> ，则欧几里得算法可以写成如下形式：</p>
+<script type="math/tex; mode=display">
+r_0=a \\
+r_1=b \\
+.\\
+.\\
+.\\
+r_{i+1}=r_{i-1}-q_ir_i</script><p>当计算到 <script type="math/tex">r_{i+1}=0</script> 时，计算结束。上一步得到的 <script type="math/tex">r_i</script> 即为 a、b 的最大公约数。</p>
+<p>而在扩展欧几里得算法中，再增加两组序列 <script type="math/tex">s_i,t_i</script> ：</p>
+<script type="math/tex; mode=display">
+r_0=a ,\ s_0=1,\ t_0=0\\
+r_1=b ,\ s_1=0,\ t_1=1\\
+.\\
+.\\
+.\\
+r_{i+1}=r_{i-1}-q_ir_i,\ s_{i+1}=s_{i-1}-q_is_i,\ t_{i+1}=t_{i-1}-q_it_i</script><p>结束的条件和欧几里得算法一致，即 <script type="math/tex">r_{i+1}=0</script> ，此时所得的 <script type="math/tex">s_i和t_i即满足\ gcd(a,b)=r_i=as_i+bt_i</script></p>
 <h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ext_euclid</span>(<span class="params">a,b</span>):</span></span><br><span class="line">    old_s, s = <span class="number">1</span>, <span class="number">0</span></span><br><span class="line">    old_t, t = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    old_r, r = a, b</span><br><span class="line">    <span class="keyword">if</span> b == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>,<span class="number">0</span>,a</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">while</span>(r != <span class="number">0</span>):</span><br><span class="line">            q=old_r // r</span><br><span class="line">            old_r, r = r, old_r-q*r</span><br><span class="line">            old_s, s = s, old_s-q*s</span><br><span class="line">            old_t, t = t, old_t-q*t</span><br><span class="line">    <span class="keyword">return</span> old_s,old_t,old_r</span><br></pre></td></tr></table></figure>
 
     </div>
