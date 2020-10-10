@@ -164,7 +164,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span>
       </div>
   </nav>
@@ -216,7 +216,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/10/09/Euclidean/" class="post-title-link" itemprop="url">Euclidean</a>
+            <a href="/2020/10/09/Euclidean/" class="post-title-link" itemprop="url">欧几里得算法</a>
         </h2>
 
         <div class="post-meta">
@@ -228,6 +228,22 @@
 
               <time title="创建时间：2020-10-09 14:58:38" itemprop="dateCreated datePublished" datetime="2020-10-09T14:58:38+08:00">2020-10-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-10 14:24:36" itemprop="dateModified" datetime="2020-10-10T14:24:36+08:00">2020-10-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Math-Cryptography/" itemprop="url" rel="index"><span itemprop="name">Math | Cryptography</span></a>
+                </span>
+            </span>
 
           
 
@@ -238,7 +254,19 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          
+          <h2 id="欧几里得算法"><a href="#欧几里得算法" class="headerlink" title="欧几里得算法"></a>欧几里得算法</h2><p>又称<strong>辗转相除法</strong>，指的是：对于任意的非负整数 𝑎 和正整数 𝑏 ，求这两个数的<strong>最大公因数</strong> ，记为 <script type="math/tex">gcd(a,b)</script> ，其中 gcd 是 greatest common division 的首字母组合。</p>
+<p>辗转相除法基于如下原理：两个整数的最大公约数等于其中较小的数和两数相除余数的最大公约数，即 <script type="math/tex">gcd(a,b) = gcd(b,a\ mod\ b)</script> </p>
+<h3 id="证明过程"><a href="#证明过程" class="headerlink" title="证明过程"></a>证明过程</h3><p>对于<strong>任何</strong>可以整除 a 和 b 的整数，那么它也一定能整除 a-b （和 b )，因此我们选择该整数（前面提到的<strong>任何</strong>整数）为 gcd(a,b) ，它一定比 a-b 和 b 的最大公约数小：<script type="math/tex">gcd(a,b) \le gcd(a-b,b)</script> </p>
+<p>同理，任何可以整除 a-b 和 b 的整数，一定可以整除 a 和 b ，因此我们选择该整数为 gcd(a-b,b) ，它一定比 a 和 b 的最大公约数小：<script type="math/tex">gcd(a-b,b)\le gcd(a,b)</script></p>
+<p>由此可得： <script type="math/tex">gcd(a,b)=gcd(a-b,b)</script></p>
+<p>必然存在整数 n ，使得 <script type="math/tex">a - n*b = a \ mod\  b</script>，所以迭代可知：</p>
+<script type="math/tex; mode=display">gcd(a-b,b)=gcd(a-2b,b)=...=gcd(a-n*b,b)=gcd(a \ mod\  b,b)</script><h3 id="实现及其工程优化"><a href="#实现及其工程优化" class="headerlink" title="实现及其工程优化"></a>实现及其工程优化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span>(<span class="params">num1,num2</span>):</span></span><br><span class="line">    <span class="keyword">while</span> num1 % num2 != <span class="number">0</span>:</span><br><span class="line">        num1, num2 = num2, num1</span><br><span class="line">    <span class="keyword">if</span> num1 % num2 == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> num2</span><br></pre></td></tr></table></figure>
+<p>但是当整数很大时，取模运算的性能较低，所以我们对其进行优化，使用 <strong>移位运算 + 更相减损术</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span>(<span class="params">num1,num2</span>):</span></span><br><span class="line">    <span class="keyword">if</span> num1 &lt; num2:</span><br><span class="line">        <span class="keyword">return</span> gcd(num2,num1)</span><br><span class="line">    <span class="keyword">if</span> num1 == num2:</span><br><span class="line">        <span class="keyword">return</span> num2</span><br><span class="line">    <span class="keyword">if</span> (num1 % num2 == <span class="number">0</span>) <span class="keyword">and</span> (num2 % <span class="number">2</span> == <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> gcd(num1 &gt;&gt; <span class="number">1</span>, num2 &gt;&gt; <span class="number">1</span>) &lt;&lt; <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> (num1 % <span class="number">2</span> == <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> gcd(num1 &gt;&gt; <span class="number">1</span>, num2)</span><br><span class="line">    <span class="keyword">elif</span> (num2 % <span class="number">2</span> == <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> gcd(num1, num2 &gt;&gt; <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> gcd(num2, num1-num2)</span><br></pre></td></tr></table></figure>
+<h2 id="扩展欧几里得算法"><a href="#扩展欧几里得算法" class="headerlink" title="扩展欧几里得算法"></a>扩展欧几里得算法</h2><p>是欧几里得算法的扩展。已知整数 a，b，扩展欧几里得算法可以在求得 a、b 的最大公约数的同时，能找到一组整数解 x、y（其中一个很可能是负数），使他们满足 <script type="math/tex">ax+by=gcd(a,b)</script> 。</p>
+<p>我们知道，在欧几里得算法中我们仅仅利用了每步带余除法所得的余数，而扩展欧几里得算法中还利用了带余除法所得的商。扩展欧几里得算法可以用来计算模反元素（也叫模逆元），计算模反元素是 RSA  加密算法中获得所需公钥、私钥的必要步骤。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ext_euclid</span>(<span class="params">a,b</span>):</span></span><br><span class="line">    old_s, s = <span class="number">1</span>, <span class="number">0</span></span><br><span class="line">    old_t, t = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    old_r, r = a, b</span><br><span class="line">    <span class="keyword">if</span> b == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>,<span class="number">0</span>,a</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">while</span>(r != <span class="number">0</span>):</span><br><span class="line">            q=old_r // r</span><br><span class="line">            old_r, r = r, old_r-q*r</span><br><span class="line">            old_s, s = s, old_s-q*s</span><br><span class="line">            old_t, t = t, old_t-q*t</span><br><span class="line">    <span class="keyword">return</span> old_s,old_t,old_r</span><br></pre></td></tr></table></figure>
+
       
     </div>
 
