@@ -6,7 +6,7 @@
   <link href="https://whisker17.github.io/atom.xml" rel="self"/>
   
   <link href="https://whisker17.github.io/"/>
-  <updated>2020-10-10T06:52:28.985Z</updated>
+  <updated>2020-10-10T09:40:03.870Z</updated>
   <id>https://whisker17.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>费马小定理</title>
+    <link href="https://whisker17.github.io/2020/10/10/fermat/"/>
+    <id>https://whisker17.github.io/2020/10/10/fermat/</id>
+    <published>2020-10-10T08:15:59.000Z</published>
+    <updated>2020-10-10T09:40:03.870Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="定理描述"><a href="#定理描述" class="headerlink" title="定理描述"></a>定理描述</h2><p>P 是一个素数，整数 a 只要不是 P 的倍数，则： <script type="math/tex">a^{p-1} ≡ 1（mod\ p）</script> </p><h2 id="证明过程"><a href="#证明过程" class="headerlink" title="证明过程"></a>证明过程</h2>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;定理描述&quot;&gt;&lt;a href=&quot;#定理描述&quot; class=&quot;headerlink&quot; title=&quot;定理描述&quot;&gt;&lt;/a&gt;定理描述&lt;/h2&gt;&lt;p&gt;P 是一个素数，整数 a 只要不是 P 的倍数，则： &lt;script type=&quot;math/tex&quot;&gt;a^{p-1} ≡ 1</summary>
+      
+    
+    
+    
+    <category term="Math | Cryptography" scheme="https://whisker17.github.io/categories/Math-Cryptography/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>欧几里得算法</title>
