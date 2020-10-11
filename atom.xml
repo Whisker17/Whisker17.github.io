@@ -6,7 +6,7 @@
   <link href="https://whisker17.github.io/atom.xml" rel="self"/>
   
   <link href="https://whisker17.github.io/"/>
-  <updated>2020-10-10T09:40:03.870Z</updated>
+  <updated>2020-10-11T05:16:32.408Z</updated>
   <id>https://whisker17.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>同余运算</title>
+    <link href="https://whisker17.github.io/2020/10/11/congruence-module/"/>
+    <id>https://whisker17.github.io/2020/10/11/congruence-module/</id>
+    <published>2020-10-11T03:41:48.000Z</published>
+    <updated>2020-10-11T05:16:32.408Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>是一种在数论中的等价关系，当两个整数除以同一个正整数，若得到相同的余数，则两个整数同余。</p><h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><h3 id="加法原理"><a href="#加法原理" class="headerlink" title="加法原理"></a>加法原理</h3><script type="math/tex; mode=display">(a+b)\ mod\ n=[(a\ mod\ n)+(b\ mod\ n)]\ mod\ n</script><h3 id="乘法原理"><a href="#乘法原理" class="headerlink" title="乘法原理"></a>乘法原理</h3><script type="math/tex; mode=display">ab\ mod \ n=[(a\ mod\ n)(b\ mod\ n)]\ mod\ n</script><h3 id="传递性"><a href="#传递性" class="headerlink" title="传递性"></a>传递性</h3><script type="math/tex; mode=display">a ≡ b\ (mod\ m),b ≡ c\ (mod\ m),可以推出 a≡c\ (mod\ m)</script>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h2&gt;&lt;p&gt;是一种在数论中的等价关系，当两个整数除以同一个正整数，若得到相同的余数，则两个整数同余。&lt;/p&gt;
+&lt;h2 id=&quot;性质&quot;&gt;&lt;a href=&quot;</summary>
+      
+    
+    
+    
+    <category term="Math | Cryptography" scheme="https://whisker17.github.io/categories/Math-Cryptography/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>费马小定理</title>
@@ -414,30 +437,6 @@
 &lt;li&gt;修改网站配置文件 &lt;code&gt;_config.yml&lt;/code&gt; ，找到 theme 字段，修改为：&lt;/li&gt;
 &lt;/ul&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;theme: next&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
-    
-    
-    
-    <category term="blog" scheme="https://whisker17.github.io/categories/blog/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>使用hexo以及github pages搭建个人网站</title>
-    <link href="https://whisker17.github.io/2020/08/09/build-blogs/"/>
-    <id>https://whisker17.github.io/2020/08/09/build-blogs/</id>
-    <published>2020-08-09T15:08:15.000Z</published>
-    <updated>2020-09-09T15:30:48.986Z</updated>
-    
-    <content type="html"><![CDATA[<p>本篇博客是记录本人在搭建该博客时的操作。</p><h2 id="Pre-build"><a href="#Pre-build" class="headerlink" title="Pre-build"></a>Pre-build</h2><ul><li><p>在 github 上新建一个 repo ，命名为 xxxx.github.io ，但是具体的域名要在 Settings 中寻找</p></li><li><p>在 repo 的 Settings 中选择 github pages 的主题，这里还可以看到具体的 url 地址</p><p><img src="/.io//2020-08-09_23-01.png" alt="2020-08-09_23-01"></p><a id="more"></a></li><li><p>安装 Hexo</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i hexo-cli -g</span><br></pre></td></tr></table></figure></li><li><p>安装扩展</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i hexo-deployer-git</span><br></pre></td></tr></table></figure></li></ul><hr><h2 id="Building"><a href="#Building" class="headerlink" title="Building"></a>Building</h2><ul><li><p><strong>将本地的博客项目与 github 连接起来</strong>，打开博客根目录下生成的 <code>_config.yml</code> 文件，这是博客的配置文件，可以修改博客的相关配置。</p><p>现在我们修改最后一行的配置：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: git@github.com:xxxxxx&#x2F;xxxxxxx.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure><p>这里设置为 ssh 的连接方式，方便后续的 deploy ，如果使用 https 方式，则每次 deploy 都需要输入 github 用户名和密码。</p></li><li><p><strong>写文章与发布文章</strong>，然后输入<code>hexo new post “xxxxx”</code>，这样就新建了一篇文章。</p><p>此时，在<code>source/_posts</code>目录下会生成一个 md 文件，这样你就可以开始编写博客了。</p><p>完成后，在根目录输入<code>hexo g</code>生成静态网页，然后输入<code>hexo s</code>就可以本地预览效果，你可以通过<code>localhost:4000</code>查看效果</p><p>最后，你可以通过<code>hexo d</code>将博客盛传到 github 上，此时你就可以通过 Settings 中的 url 地址进行访问</p></li></ul><hr><h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h2><ul><li>注意新建的 repo 中的 xxxx.github.io 最好和用户名相同，否则会出现 hexo 不起作用的效果</li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;本篇博客是记录本人在搭建该博客时的操作。&lt;/p&gt;
-&lt;h2 id=&quot;Pre-build&quot;&gt;&lt;a href=&quot;#Pre-build&quot; class=&quot;headerlink&quot; title=&quot;Pre-build&quot;&gt;&lt;/a&gt;Pre-build&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;在 github 上新建一个 repo ，命名为 xxxx.github.io ，但是具体的域名要在 Settings 中寻找&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;在 repo 的 Settings 中选择 github pages 的主题，这里还可以看到具体的 url 地址&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/.io//2020-08-09_23-01.png&quot; alt=&quot;2020-08-09_23-01&quot;&gt;&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</summary>
     
     
     
