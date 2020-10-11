@@ -22,17 +22,24 @@
     var CONFIG = {"hostname":"whisker17.github.io","root":"/","scheme":"Muse","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false};
   </script>
 
-  <meta name="description" content="定理描述P 是一个素数，整数 a 只要不是 P 的倍数，则： a^{p-1} ≡ 1（mod\ p）  证明过程">
+  <meta name="description" content="定理描述假设 P 是一个素数，a 是一个整数，那么 a^P-a\ 是 P 的倍数 ，即 a^{p} ≡ a（mod\ p）  如果 a 不是 P 的倍数，这个定理也可以写成： a^{p-1} ≡ 1（mod\ p） 证明过程根据同余的性质，只需要证明 a^P ≡ a \ (mod\ P)\ ，对于 0\le a \le P-1 成立，就可以可出上述定理。  反证法。假如结论不成立的话，就会有 i,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="费马小定理">
 <meta property="og:url" content="https://whisker17.github.io/2020/10/10/fermat/index.html">
 <meta property="og:site_name" content="Ideal Area">
-<meta property="og:description" content="定理描述P 是一个素数，整数 a 只要不是 P 的倍数，则： a^{p-1} ≡ 1（mod\ p）  证明过程">
+<meta property="og:description" content="定理描述假设 P 是一个素数，a 是一个整数，那么 a^P-a\ 是 P 的倍数 ，即 a^{p} ≡ a（mod\ p）  如果 a 不是 P 的倍数，这个定理也可以写成： a^{p-1} ≡ 1（mod\ p） 证明过程根据同余的性质，只需要证明 a^P ≡ a \ (mod\ P)\ ，对于 0\le a \le P-1 成立，就可以可出上述定理。  反证法。假如结论不成立的话，就会有 i,">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=i+%2A+a+%5Cequiv+j+%2A+a%5Cpmod+n">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%28i+-+j%29+%2A+a+%5Cequiv+0%5Cpmod+n">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%281+%2A+2+%2A+3+....+n+-+1%29+%3D+%28a%5Cbmod+n%29%282a%5Cbmod+n%29%283a%5Cbmod+n%29+...+%28%28n-1%29a%5Cbmod+n%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%281+%2A+2+%2A+3+....+n+-+1%29+%5Cequiv+a+%2A+2a+%2A+3a+%2A+...+%28n-1%29a%5Cpmod+n">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%281+%2A+2+%2A+3+....+n+-+1%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=a%5E%7Bn-1%7D%5Cequiv+1%5Cmod+n">
 <meta property="article:published_time" content="2020-10-10T08:15:59.000Z">
-<meta property="article:modified_time" content="2020-10-10T09:40:03.870Z">
+<meta property="article:modified_time" content="2020-10-11T12:28:46.060Z">
 <meta property="article:author" content="Whisker17">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.zhihu.com/equation?tex=i+%2A+a+%5Cequiv+j+%2A+a%5Cpmod+n">
 
 <link rel="canonical" href="https://whisker17.github.io/2020/10/10/fermat/">
 
@@ -228,10 +235,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-10-10 16:15:59 / 修改时间：17:40:03" itemprop="dateCreated datePublished" datetime="2020-10-10T16:15:59+08:00">2020-10-10</time>
+              <time title="创建时间：2020-10-10 16:15:59" itemprop="dateCreated datePublished" datetime="2020-10-10T16:15:59+08:00">2020-10-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-11 20:28:46" itemprop="dateModified" datetime="2020-10-11T20:28:46+08:00">2020-10-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -251,8 +264,23 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="定理描述"><a href="#定理描述" class="headerlink" title="定理描述"></a>定理描述</h2><p>P 是一个素数，整数 a 只要不是 P 的倍数，则： <script type="math/tex">a^{p-1} ≡ 1（mod\ p）</script> </p>
-<h2 id="证明过程"><a href="#证明过程" class="headerlink" title="证明过程"></a>证明过程</h2>
+        <h2 id="定理描述"><a href="#定理描述" class="headerlink" title="定理描述"></a>定理描述</h2><p>假设 P 是一个素数，a 是一个整数，那么 <script type="math/tex">a^P-a\ 是 P 的倍数</script> ，即 <script type="math/tex">a^{p} ≡ a（mod\ p）</script> </p>
+<p>如果 a 不是 P 的倍数，这个定理也可以写成： <script type="math/tex">a^{p-1} ≡ 1（mod\ p）</script></p>
+<h2 id="证明过程"><a href="#证明过程" class="headerlink" title="证明过程"></a>证明过程</h2><p>根据同余的性质，只需要证明 <script type="math/tex">a^P ≡ a \ (mod\ P)\ ，对于 0\le a \le P-1 成立，就可以可出上述定理。</script> </p>
+<p>反证法。假如结论不成立的话，就会有 i, j 两个数字，使得</p>
+<p><img src="https://www.zhihu.com/equation?tex=i+%2A+a+%5Cequiv+j+%2A+a%5Cpmod+n" alt="[公式]"></p>
+<p>不妨假设 i &gt; j，将上式移动一下位置，就会有</p>
+<p><img src="https://www.zhihu.com/equation?tex=%28i+-+j%29+%2A+a+%5Cequiv+0%5Cpmod+n" alt="[公式]"></p>
+<p>换句话说，就是 (i - j) * a 可以被 n 整除。而 n 是素数，那么 (i - j) 或者 a 其中之一就必须包含因子 n。但 (i - j) 和 a 都比 n 要小，显然不可能包含因子 n。于是结论得证。</p>
+<p>上面的证明中，不一定需要 a &lt; n。只要 n 为素数，而 a, n 两者互质，证明也可成立，费马小定理也可成立。</p>
+<p>-—————————-</p>
+<p>因为乘以 a 再 mod n，只是 1 到 n - 1 的重新排列，数字并不会重复。于是我们就可以知道</p>
+<p><img src="https://www.zhihu.com/equation?tex=%281+%2A+2+%2A+3+....+n+-+1%29+%3D+%28a%5Cbmod+n%29%282a%5Cbmod+n%29%283a%5Cbmod+n%29+...+%28%28n-1%29a%5Cbmod+n%29" alt="[公式]"></p>
+<p>应用同余的乘法原理，使用同余的记号，可以将上式记为</p>
+<p><img src="https://www.zhihu.com/equation?tex=%281+%2A+2+%2A+3+....+n+-+1%29+%5Cequiv+a+%2A+2a+%2A+3a+%2A+...+%28n-1%29a%5Cpmod+n" alt="[公式]"></p>
+<p>将上式同时除以 <img src="https://www.zhihu.com/equation?tex=%281+%2A+2+%2A+3+....+n+-+1%29" alt="[公式]"> ，费马小定理得证</p>
+<p><img src="https://www.zhihu.com/equation?tex=a%5E%7Bn-1%7D%5Cequiv+1%5Cmod+n" alt="[公式]"></p>
+
     </div>
 
     
